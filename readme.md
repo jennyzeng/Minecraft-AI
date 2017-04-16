@@ -7,13 +7,18 @@ This repo only works for Mac.
 
 https://github.com/Microsoft/malmo
 
+Launch client in Malmo minecraft before running python files if you want to test the performance in minecraft. 
+
+
 ### project configuration
 
 [PyCharm](https://www.jetbrains.com/pycharm/) is preferred.
 
-Open the whole project as a Pycharm project.
+- Open the whole project as a Pycharm project.
 
-mark Python_Examples directory as a source directory
+- mark Python_Examples in Malmo directory as a source directory: 
+
+   in preference->project structure: press add content root: Python_Example, click on this root, and mark it as a source 
 
 ### use VirtualEnv
 We can only use the system version Python. It is better for us to create a virtual env  
@@ -39,7 +44,7 @@ We can only use the system version Python. It is better for us to create a virtu
 - We have to install some additional packages for this group project.
   We can install packages from requirments.txt in groupProject directory.
     ```
-    (MCpython) $ pip install -r ./equirements.txt
+    (MCpython) $ pip install -r ./requirements.txt
     ```
 - in pycharm preferences configure project interpreter
     to be `projectroot/MCpython/bin/python`
