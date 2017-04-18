@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<Mission xmlns="http://ProjectMalmo.microsoft.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <About>
+    <Summary>Generate biome for video record Schema</Summary>
+  </About>
+
+  <ServerSection>
+    <ServerInitialConditions>
+        <Time><StartTime>1</StartTime></Time>
+    </ServerInitialConditions>
+    <ServerHandlers>
+      <FlatWorldGenerator
+              generatorString="3;1*minecraft:bedrock,7*minecraft:dirt,1*minecraft:grass;4;village,mineshaft(chance=0.01),stronghold(chance=32 count=3 spread=3),biome_1(distance=32),dungeon,decoration,lake"
+      />
+      <ServerQuitFromTimeUp timeLimitMs="5000"/>
+      <ServerQuitWhenAnyAgentFinishes/>
+    </ServerHandlers>
+  </ServerSection>
+
+  <AgentSection mode="Spectator">
+                <Name>MalmoBot</Name>
+                <AgentStart>
+                    <Placement x="0.5" y="25.0" z="0.5" yaw="90"/>
+                </AgentStart>
+                <AgentHandlers>
+                  <ObservationFromFullStats/>
+                  <ContinuousMovementCommands turnSpeedDegs="180"/>
+                </AgentHandlers>
+              </AgentSection>
+
+</Mission>
