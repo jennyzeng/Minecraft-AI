@@ -27,7 +27,7 @@ To accelerate the training process, we would use [Amazon Web Service](aws.amazon
 
 ## Evaluation Plan
 
-We expect to evaluate the project result based on the accuracy of the biome recognition. Area Under Curve (AUC) score, which is a metric for binary classification, will be a good guideline, either.
+We expect to evaluate the project result based on the accuracy of the biome recognition. We generate different sets of training and testing data. Then we calcuate the Area Under Curve (AUC), which is a metric for binary classification, for our training data and testing data and plot graphs. We will compare the AUC of output with different parameters and choose the parameters that yields better performance.
 
 ## References
 
