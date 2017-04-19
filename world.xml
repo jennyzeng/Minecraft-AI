@@ -11,7 +11,8 @@
     </ServerInitialConditions>
     <ServerHandlers>
       <FlatWorldGenerator
-              generatorString="3;1*minecraft:bedrock,7*minecraft:dirt,1*minecraft:grass;4;village,mineshaft(chance=0.01),stronghold(chance=32 count=3 spread=3),biome_1(distance=32),dungeon,decoration,lake"
+              generatorString=
+                      "3;1*minecraft:bedrock,7*minecraft:dirt,1*minecraft:grass;0;village,mineshaft(chance=0.01),stronghold(chance=32 count=3 spread=3),biome_1(distance=32),dungeon,decoration,lake"
       />
       <ServerQuitFromTimeUp timeLimitMs="5000"/>
       <ServerQuitWhenAnyAgentFinishes/>
