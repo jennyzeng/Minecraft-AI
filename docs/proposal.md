@@ -21,24 +21,24 @@ We will generate biomes with xml in Malmo to capture image data with labels for 
 
 ## AI/ML Algorithms
 
-We are preparing to use [TensorFlow](https://www.tensorflow.org/) and implement a Convolutional Neural Network(CNN) for image recognition. Some other possible frameworks are [Caffe](http://caffe.berkeleyvision.org/), [CNTK](https://www.microsoft.com/en-us/research/product/cognitive-toolkit/) and [Scikit-Learn](http://scikit-learn.org). Besides CNN, we may also test the performance on SVM classifier, Random Forest, Gradient Boosting, and so on. 
+We are preparing to use [TensorFlow](https://www.tensorflow.org/) and implementing a Convolutional Neural Network(CNN) for image recognition. Some other possible frameworks are [Caffe](http://caffe.berkeleyvision.org/), [CNTK](https://www.microsoft.com/en-us/research/product/cognitive-toolkit/) and [Scikit-Learn](http://scikit-learn.org). Besides CNN, we may also test the performance of SVM classifier, Random Forest, Gradient Boosting, and so on.
 
 To accelerate the training process, we would use [Amazon Web Service](aws.amazon.com) and [Docker](https://www.docker.com/) with GPU. 
 
 ## Evaluation Plan
 
-We are expecting to evaluate the project result based on the accuracy of the biome recognition. Area Under Curve (AUC) score, which is a metric for binary classification, will be a good guideline, either. 
+We expect to evaluate the project result based on the accuracy of the biome recognition. Area Under Curve (AUC) score, which is a metric for binary classification, will be a good guideline, either.
 
 ## References
 
-http://minecraft.gamepedia.com/Biome
+[http://minecraft.gamepedia.com/Biome](http://minecraft.gamepedia.com/Biome)
 
-https://www.tensorflow.org/tutorials/layers
+[https://www.tensorflow.org/tutorials/layers](https://www.tensorflow.org/tutorials/layers)
 
-http://www.deeplearningbook.org/contents/convnets.html
+[http://www.deeplearningbook.org/contents/convnets.html](http://www.deeplearningbook.org/contents/convnets.html)
 
-http://cs231n.github.io/convolutional-networks/
+[http://cs231n.github.io/convolutional-networks/](http://cs231n.github.io/convolutional-networks/)
 
-https://www.youtube.com/watch?v=FmpDIaiMIeA
+[https://www.youtube.com/watch?v=FmpDIaiMIeA](https://www.youtube.com/watch?v=FmpDIaiMIeA)
 
-https://microsoft.github.io/malmo/0.21.0/Schemas/MissionHandlers.html#element_FlatWorldGenerator
+[https://microsoft.github.io/malmo/0.21.0/Schemas/MissionHandlers.html#element_FlatWorldGenerator](https://microsoft.github.io/malmo/0.21.0/Schemas/MissionHandlers.html#element_FlatWorldGenerator)
