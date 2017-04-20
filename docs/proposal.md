@@ -1,5 +1,5 @@
 ---
-layout: default3
+layout: default
 title: Proposal
 ---
 
@@ -21,11 +21,11 @@ We will generate biomes with xml in Malmo to capture image data with labels for 
 
 ## AI/ML Algorithms
 
-The problem of recognizing biome is an classification problem. Image recognition/classification are often solved with Convolutional Neural Network(CNN). So we decided to use it as our main algorithm. Besides CNN, we may also test the performance of SVM classifier, Random Forest, Gradient Boosting, because these are some good methods for solving classification problems. We are also open to other algorithms that we will know during research.
+Recognizing biome is an classification problem. Image recognition/classification is widely applied with Convolutional Neural Network(CNN). Besides CNN, we may also test the performance of SVM classifier, Random Forest, Gradient Boosting, because these are some good methods for solving classification problems. We are also open to other algorithms during research.
 
-We are preparing to use [TensorFlow](https://www.tensorflow.org/) to implementing a Convolutional Neural Network(CNN) for image recognition. Some other possible frameworks are [Caffe](http://caffe.berkeleyvision.org/), [CNTK](https://www.microsoft.com/en-us/research/product/cognitive-toolkit/) and [Scikit-Learn](http://scikit-learn.org). 
+We plan to use [TensorFlow](https://www.tensorflow.org/) framework and implement a Convolutional Neural Network(CNN) for image recognition. Some other possible frameworks are [Caffe](http://caffe.berkeleyvision.org/), [CNTK](https://www.microsoft.com/en-us/research/product/cognitive-toolkit/) and [Scikit-Learn](http://scikit-learn.org). 
 
-To accelerate the training process, we would use [Amazon Web Service](aws.amazon.com) and [Docker](https://www.docker.com/) with GPU. 
+To accelerate the training process, we will use [Amazon Web Service](aws.amazon.com) and [Docker](https://www.docker.com/) with GPU. 
 
 ## Evaluation Plan
 
