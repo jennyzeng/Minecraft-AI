@@ -13,7 +13,7 @@ A [biome](http://minecraft.gamepedia.com/Biome) is a region in Minecraft world w
 
 <img src="https://hydra-media.cursecdn.com/minecraft.gamepedia.com/d/d1/Deciduous_Forest.png?version=a2315c785dbfd1fce8b768923aa98540" width="50%">
 
-Our first step is to do binary classification on a specific kind of biome (such as ocean or forest). If time permits, we will make classification on a few different kinds of distinguishing biomes. Each biome have a main color, and information and about the temperature.
+Our first step is to do binary classification on a specific kind of biome (such as ocean or forest). If time permits, we will make classification on a few different kinds of distinguishing biomes. Each biome have a main color, and information about the temperature.
 
 ### Collect data
 
