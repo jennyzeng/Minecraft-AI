@@ -17,7 +17,7 @@ Our first step is to do binary classification on a specific kind of biome (such 
 
 ### Collect data
 
-The data we need to collect is the images about the Biome. We will generate biomes with xml in Malmo to capture image data with labels for training and testing. We plan to have at least 200 samples as the training data and first make the samples balanced. If time permits, we will also test the imbalanced data if neeeded.
+The data we need to collect is the images about the Biome. We will generate biomes with xml in Malmo to capture image data with labels for training and testing. We plan to have at least 500 samples as the training data and first make the samples balanced. If time permits, we will also test the imbalanced data if neeeded.
 
 ## AI/ML Algorithms
 
@@ -29,8 +29,7 @@ To accelerate the training process, we will use [Amazon Web Service](aws.amazon.
 
 ## Evaluation Plan
 
-Our evaluation plan will have two parts. One is the quantity evaluation and the other is the quality evaluation. For the quantity evaluation, 
-For the quality evaluation, We expect to evaluate the project result based on the accuracy of the biome recognition. We generate different sets of training and testing data. Then we calcuate the error rate (provided by tensor flow) , which is a metric for binary classification, for our training data and testing data and plot graphs. We will compare the AUC of output with different parameters and choose the parameters that yields better performance.
+Our evaluation plan will have two parts. One is the quantity evaluation and the other is the quality evaluation. For the quantity evaluation, we plan to use at least 200 image to test and see the correctness.For the quality evaluation, We expect to evaluate the project result based on the accuracy of the biome recognition. We generate different sets of training and testing data. Then we calcuate the error rate (provided by tensor flow) , which is a metric for binary classification, for our training data and testing data and plot graphs. We will compare the AUC of output with different parameters and choose the parameters that yields better performance.
 
 ## References
 
