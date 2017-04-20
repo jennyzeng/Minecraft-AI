@@ -17,7 +17,7 @@ Our first step is to do binary classification on a specific kind of biome (such 
 
 ### Collect data
 
-The data we need to collect is the images about the Biome. We will generate biomes with xml in Malmo to capture image data with labels for training and testing. We plan to have at least 200 samples as the training data and first we would make the samples balanced. If time permits, we will also test the imbalanced data if neeeded.
+The data we need to collect is the images about the Biome. We will generate biomes with xml in Malmo to capture image data with labels for training and testing. We plan to have at least 200 samples as the training data and first make the samples balanced. If time permits, we will also test the imbalanced data if neeeded.
 
 ## AI/ML Algorithms
 
