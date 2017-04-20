@@ -5,7 +5,7 @@ title: Proposal
 
 ## Summary of the Project
 
-Our Minecraft-AI project will basically focus on **biome recognition** in Minecraft. Input an image that a Minecraft agent observes, our model will give a prediction about what kind of biome is in the the image. More specifically, we would train the model with many images that the Minecraft agent observes, let the model learn the pattern with these training images, use the model to predict test(new) images and see the expected types of output.
+Our Minecraft-AI project will basically focus on **biome recognition** in Minecraft. Input an image that a Minecraft agent observes, our model will give a prediction about what kind of biome is in the the image. More specifically, we will train the model with many images that the Minecraft agent observes, let the model learn the pattern with these training images, use the model to predict test(new) images and see the expected types of output.
 
 ### Biome in Minecraft
 
