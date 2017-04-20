@@ -13,7 +13,7 @@ A [biome](http://minecraft.gamepedia.com/Biome) is a region in Minecraft world w
 
 <img src="https://hydra-media.cursecdn.com/minecraft.gamepedia.com/d/d1/Deciduous_Forest.png?version=a2315c785dbfd1fce8b768923aa98540" width="50%">
 
-Our first step is to do binary classification on a specific kind of biome. If time permits, we will make classification on a few different kinds of distinguishing biomes. 
+Our first step is to do binary classification on a specific kind of biome (such as ocean or forest). If time permits, we will make classification on a few different kinds of distinguishing biomes. Each biome have a main color, and information and about the temperature and 
 
 ### Collect data
 
@@ -29,7 +29,7 @@ To accelerate the training process, we would use [Amazon Web Service](aws.amazon
 
 ## Evaluation Plan
 
-We expect to evaluate the project result based on the accuracy of the biome recognition. We generate different sets of training and testing data. Then we calcuate the Area Under Curve (AUC), which is a metric for binary classification, for our training data and testing data and plot graphs. We will compare the AUC of output with different parameters and choose the parameters that yields better performance.
+We expect to evaluate the project result based on the accuracy of the biome recognition. We generate different sets of training and testing data. Then we calcuate the error rate (provided by tensor flow) , which is a metric for binary classification, for our training data and testing data and plot graphs. We will compare the AUC of output with different parameters and choose the parameters that yields better performance.
 
 ## References
 
