@@ -7,14 +7,11 @@
 
   <ServerSection>
     <ServerInitialConditions>
-        <Time><StartTime>1</StartTime></Time>
+        <!--<Time><StartTime>1</StartTime></Time>-->
     </ServerInitialConditions>
     <ServerHandlers>
-      <FlatWorldGenerator
-              generatorString=
-                      "3;1*minecraft:bedrock,7*minecraft:dirt,1*minecraft:grass;0;village,mineshaft(chance=0.01),stronghold(chance=32 count=3 spread=3),biome_1(distance=32),dungeon,decoration,lake"
-      />
-      <ServerQuitFromTimeUp timeLimitMs="5000"/>
+      <DefaultWorldGenerator seed=""/>
+      <ServerQuitFromTimeUp timeLimitMs="50000"/>
       <ServerQuitWhenAnyAgentFinishes/>
     </ServerHandlers>
   </ServerSection>
@@ -22,7 +19,7 @@
   <AgentSection mode="Spectator">
                 <Name>MalmoBot</Name>
                 <AgentStart>
-                    <Placement x="0.5" y="25.0" z="0.5" yaw="90"/>
+                    <Placement x="0.5" y="70.0" z="0.5" yaw="90"/>
                 </AgentStart>
                 <AgentHandlers>
                   <ObservationFromFullStats/>

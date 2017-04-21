@@ -2,18 +2,32 @@ import MalmoPython
 import os
 import sys
 import time
+from generateWorldXML import generateXMLbySeed
 # -- set up the mission -- #
-mission_file = './world.xml'
-with open(mission_file, 'r') as f:
-    print "Loading mission from %s" % mission_file
-    mission_xml = f.read()
-    my_mission = MalmoPython.MissionSpec(mission_xml, True)
+# mission_file = './world.xml'
+# with open(mission_file, 'r') as f:
+#     print "Loading mission from %s" % mission_file
+#     mission_xml = f.read()
+#     my_mission = MalmoPython.MissionSpec(mission_xml, True)
+#     my_mission_record = MalmoPython.MissionRecordSpec()
+biomes = {"desert":"./seeds/desert.txt",
+          "forest": "./seeds/forest.txt",
+          "mesa":"./seeds/mesa.txt",
+          "eh":"./seeds/extremeHills.txt",
+          "jungle":"./seeds/jungle.txt"}
+
+try:
+
+    missionXML = generateXMLbySeed(biomes["mesa"])
+    my_mission = MalmoPython.MissionSpec(missionXML, True)
     my_mission_record = MalmoPython.MissionRecordSpec()
+except Exception as e:
+    print "open mission ERROR: ", e
 
 
 agent_host = MalmoPython.AgentHost()
 try:
-    agent_host.parse( sys.argv )
+    agent_host.parse( sys.argv)
 except RuntimeError as e:
     print 'ERROR:',e
     print agent_host.getUsage()
@@ -55,6 +69,7 @@ print "Mission running ",
 # agent_host.sendCommand("jump 1")
 # agent_host.sendCommand("jump 0")
 # agent_host.sendCommand("jump 1")
+
 agent_host.sendCommand("fly 1")
 # time.sleep(1)
 agent_host.sendCommand("pitch 0.2")
