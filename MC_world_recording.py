@@ -46,7 +46,6 @@ for retry in range(max_retries):
     try:
         # agent_host.setVideoPolicy(MalmoPython.AgentHost.VideoPolicy())
         agent_host.startMission( my_mission, my_mission_record )
-
         break
     except RuntimeError as e:
         if retry == max_retries - 1:
@@ -68,31 +67,19 @@ while not world_state.has_mission_begun:
 print
 print "Mission running ",
 
-# agent_host.sendCommand("jump 1")
-# agent_host.sendCommand("jump 0")
-# agent_host.sendCommand("jump 1")
-# agent_host.sendCommand("jump 0")
-# agent_host.sendCommand("jump 1")
-
-agent_host.sendCommand("fly 1")
-# time.sleep(1)
-agent_host.sendCommand("pitch 0.2")
-time.sleep(1)
-agent_host.sendCommand("pitch 0")
-img = world_state.video_frames
-print "type img", len(img)
-# agent_host.sendCommand("jump 0")
-# Loop until mission ends:
 while world_state.is_mission_running:
-    sys.stdout.write(".")
-    time.sleep(0.1)
+    agent_host.sendCommand("move " + str(0.5 * (random.random() * 2 - 0.5)))
+    agent_host.sendCommand( "turn " + str(0.5*(random.random()*2-1)) )
+    time.sleep(1)
     world_state = agent_host.getWorldState()
     if world_state.number_of_video_frames_since_last_state > 0:
         img = world_state.video_frames[-1].pixels
         saveArrayAsImg(img, "./img/test.jpg")
 
+
     for error in world_state.errors:
-        print "Error:",error.text
+          print "Error:",error.text
+
 
 print
 print "Mission ended"
