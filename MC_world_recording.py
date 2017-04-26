@@ -64,25 +64,37 @@ while not world_state.has_mission_begun:
 print
 print "Mission running ",
 
+while world_state.is_mission_running:
+    agent_host.sendCommand("move " + str(0.5 * (random.random() * 2 - 0.5)))
+
+
+    agent_host.sendCommand( "turn " + str(0.5*(random.random()*2-1)) )
+    time.sleep(1)
+    world_state = agent_host.getWorldState()
+    print "video,observations",world_state.number_of_video_frames_since_last_state,\
+        world_state.number_of_observations_since_last_state
+          
+    for error in world_state.errors:
+          print "Error:",error.text
 # agent_host.sendCommand("jump 1")
 # agent_host.sendCommand("jump 0")
 # agent_host.sendCommand("jump 1")
 # agent_host.sendCommand("jump 0")
 # agent_host.sendCommand("jump 1")
 
-agent_host.sendCommand("fly 1")
+#agent_host.sendCommand("fly 1")
 # time.sleep(1)
-agent_host.sendCommand("pitch 0.2")
-time.sleep(1)
-agent_host.sendCommand("pitch 0")
+#agent_host.sendCommand("pitch 0.2")
+#time.sleep(1)
+#agent_host.sendCommand("pitch 0")
 # agent_host.sendCommand("jump 0")
 # Loop until mission ends:
-while world_state.is_mission_running:
-    sys.stdout.write(".")
-    time.sleep(0.1)
-    world_state = agent_host.getWorldState()
-    for error in world_state.errors:
-        print "Error:",error.text
+#while world_state.is_mission_running:
+ #   sys.stdout.write(".")
+  #  time.sleep(0.1)
+   # world_state = agent_host.getWorldState()
+    #for error in world_state.errors:
+     #   print "Error:",error.text
 
 print
 print "Mission ended"
