@@ -19,7 +19,7 @@ def generateXMLbySeed(seedfile):
 	    </ServerInitialConditions>
 	    <ServerHandlers>
 	      <DefaultWorldGenerator seed="{seed}" forceReset="1" destroyAfterUse="1"/>
-	      <ServerQuitFromTimeUp timeLimitMs="50000"/>
+	      <ServerQuitFromTimeUp timeLimitMs="5000"/>
 	      <ServerQuitWhenAnyAgentFinishes/>
 	    </ServerHandlers>
 	  </ServerSection>
@@ -30,6 +30,12 @@ def generateXMLbySeed(seedfile):
 	                    <!--<Placement x="0.5" y="100.0" z="0.5" yaw="90"/>-->
 	                </AgentStart>
 	                <AgentHandlers>
+	                <VideoProducer
+					want_depth="0"
+					viewpoint="2">
+					<Width> 200 </Width>
+					<Height> 100 </Height>
+					</VideoProducer>
 	                  <ObservationFromFullStats/>
 	                  <ContinuousMovementCommands turnSpeedDegs="180"/>
 	                </AgentHandlers>
