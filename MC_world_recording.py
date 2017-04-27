@@ -2,6 +2,7 @@ import MalmoPython
 import os
 import sys
 import time
+import random
 from generateWorldXML import generateXMLbySeed
 from MC_Img_Preprocess import saveArrayAsImg
 # -- set up the mission -- #
