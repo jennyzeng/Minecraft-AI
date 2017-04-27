@@ -17,13 +17,16 @@ biomes = {"desert":"./seeds/desert.txt",
           "mesa":"./seeds/mesa.txt",
           "eh":"./seeds/extremeHills.txt",
           "jungle":"./seeds/jungle.txt"}
-
+img_width = 400
+img_height = 200
 try:
 
-    missionXML = generateXMLbySeed(biomes["mesa"])
+    missionXML = generateXMLbySeed(biomes["mesa"],img_width,img_height)
     my_mission = MalmoPython.MissionSpec(missionXML, True)
     my_mission_record = MalmoPython.MissionRecordSpec("./data.tgz")
     my_mission_record.recordMP4(20, 400000)
+    #print my_mission.getVideoWidth()
+    #print my_mission.getVideoHeight()
 except Exception as e:
     print "open mission ERROR: ", e
 
@@ -67,15 +70,17 @@ while not world_state.has_mission_begun:
 
 print
 print "Mission running ",
-
+c = 1
 while world_state.is_mission_running:
     agent_host.sendCommand("move " + str(0.5 * (random.random() * 2 - 0.5)))
     agent_host.sendCommand( "turn " + str(0.5*(random.random()*2-1)) )
-    time.sleep(1)
+    time.sleep(0.1)
     world_state = agent_host.getWorldState()
     if world_state.number_of_video_frames_since_last_state > 0:
+        print "image to save!"
         img = world_state.video_frames[-1].pixels
-        saveArrayAsImg(img, "./img/test.jpg")
+        saveArrayAsImg(img, img_width, img_height,"./img/test"+str(c)+".jpg")
+        c+=1
 
 
     for error in world_state.errors:
