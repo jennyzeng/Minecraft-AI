@@ -17,7 +17,7 @@ biomes = {"desert":"./seeds/desert.txt",
           "mesa":"./seeds/mesa.txt",
           "eh":"./seeds/extremeHills.txt",
           "jungle":"./seeds/jungle.txt"}
-img_width = 400
+img_width = 320
 img_height = 200
 try:
 
@@ -72,9 +72,9 @@ print
 print "Mission running ",
 c = 1
 while world_state.is_mission_running:
-    agent_host.sendCommand("move " + str(0.5 * (random.random() * 2 - 0.5)))
+    agent_host.sendCommand("move " + str((random.random() * 10 - 0.5)))
     agent_host.sendCommand( "turn " + str(0.5*(random.random()*2-1)) )
-    time.sleep(0.1)
+    time.sleep(0.05)
     world_state = agent_host.getWorldState()
     if world_state.number_of_video_frames_since_last_state > 0:
         print "image to save!"
