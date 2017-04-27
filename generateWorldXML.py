@@ -33,8 +33,8 @@ def generateXMLbySeed(seedfile):
 	                <VideoProducer
 					want_depth="0"
 					viewpoint="2">
-					<Width> 200 </Width>
-					<Height> 100 </Height>
+					<Width> 400 </Width>
+					<Height> 200 </Height>
 					</VideoProducer>
 	                  <ObservationFromFullStats/>
 	                  <ContinuousMovementCommands turnSpeedDegs="180"/>

@@ -30,7 +30,7 @@ def convertToArray(infile):
 
 def saveArrayAsImg(array, outfile):
     array = np.array(array)
-    array = array.reshape(100,200,3)
+    array = array.reshape(200,400,3)
     im = Image.fromarray(array,mode='RGB')
     im.save(outfile)
 
