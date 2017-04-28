@@ -5,7 +5,7 @@ http://minecraft.tools/en/custom.php?#seed
 
 
 
-def generateXMLbySeed(srcfile):
+def generateXMLbySeed(srcfile, width, height):
 	missionXML = '''<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 	<Mission xmlns="http://ProjectMalmo.microsoft.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
@@ -30,6 +30,12 @@ def generateXMLbySeed(srcfile):
 	                    <!--<Placement x="0.5" y="100.0" z="0.5" yaw="90"/>-->
 	                </AgentStart>
 	                <AgentHandlers>
+	                <VideoProducer
+					want_depth="0"
+					viewpoint="2">
+					<Width> {width} </Width>
+					<Height> {height} </Height>
+					</VideoProducer>
 	                  <ObservationFromFullStats/>
 	                  <ContinuousMovementCommands turnSpeedDegs="180"/>
 	                </AgentHandlers>
@@ -37,6 +43,4 @@ def generateXMLbySeed(srcfile):
 
 	</Mission>
 	'''
-	# src = open(srcfile,'r').read()
-	# src = src.replace("\"", "'")
-	return missionXML.format(src=srcfile)
+	return missionXML.format(src=srcfile, width=width, height= height)

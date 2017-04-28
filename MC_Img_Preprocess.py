@@ -27,6 +27,14 @@ def convertToArray(infile):
     img = Image.open(infile)
     arr = np.array(img) # w * h *3 array
     return arr
+
+def saveArrayAsImg(array, width, height, outfile):
+    array = np.array(array)
+    array = array.reshape(height,width,3)
+    im = Image.fromarray(array,mode='RGB')
+    im.save(outfile)
+
+#1000*1600
 if __name__ == '__main__':
     # imageResize('img/starry-night.jpg', 'out.jpg', (128, 128))
     arr = convertToArray('out.jpg')

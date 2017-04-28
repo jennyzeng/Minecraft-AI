@@ -2,7 +2,9 @@ import MalmoPython
 import os
 import sys
 import time
+import random
 from generateWorldXML import generateXMLbySeed
+from MC_Img_Preprocess import saveArrayAsImg
 # -- set up the mission -- #
 # mission_file = './world.xml'
 # with open(mission_file, 'r') as f:
@@ -21,13 +23,16 @@ biomes = {"desert":"D:\Minecraft-AI\seeds\desert",
           "mesa":"D:\Minecraft-AI\seeds\mesa",
           "eh":"D:\Minecraft-AI\seeds\eh",
           "jungle":"D:\Minecraft-AI\seeds\jungle"}
-
+img_width = 320
+img_height = 200
 try:
 
-    missionXML = generateXMLbySeed(biomes["mesa"])
+    missionXML = generateXMLbySeed(biomes["mesa"],img_width,img_height)
     my_mission = MalmoPython.MissionSpec(missionXML, True)
-    my_mission_record = MalmoPython.MissionRecordSpec()
-    my_mission_record.recordMP4(1,100000)
+    my_mission_record = MalmoPython.MissionRecordSpec("./data.tgz")
+    my_mission_record.recordMP4(20, 400000)
+    #print my_mission.getVideoWidth()
+    #print my_mission.getVideoHeight()
 except Exception as e:
     print "open mission ERROR: ", e
 
@@ -70,22 +75,21 @@ while not world_state.has_mission_begun:
 
 print
 print "Mission running ",
-
-
-agent_host.sendCommand("fly 1")
-# time.sleep(1)
-agent_host.sendCommand("pitch 0.2")
-time.sleep(1)
-agent_host.sendCommand("pitch 0")
-
-# agent_host.sendCommand("jump 0")
-# Loop until mission ends:
+c = 1
 while world_state.is_mission_running:
-    sys.stdout.write(".")
-    time.sleep(0.1)
+    agent_host.sendCommand("move " + str((random.random() * 10 - 0.5)))
+    agent_host.sendCommand( "turn " + str(0.5*(random.random()*2-1)) )
+    time.sleep(0.05)
     world_state = agent_host.getWorldState()
+    if world_state.number_of_video_frames_since_last_state > 0:
+        print "image to save!"
+        img = world_state.video_frames[-1].pixels
+        saveArrayAsImg(img, img_width, img_height,"./img/test"+str(c)+".jpg")
+        c+=1
+
+
     for error in world_state.errors:
-        print "Error:",error.text
+          print "Error:",error.text
 
 print
 print "Mission ended"
