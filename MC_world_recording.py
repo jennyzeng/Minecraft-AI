@@ -77,9 +77,10 @@ print
 print "Mission running ",
 c = 1
 while world_state.is_mission_running:
-    agent_host.sendCommand("move " + str((random.random() * 10 - 0.5)))
+    agent_host.sendCommand("move "+ str((random.random() * 10 - 0.5)))
+    time.sleep(random.random())
     agent_host.sendCommand( "turn " + str(0.5*(random.random()*2-1)) )
-    time.sleep(0.05)
+    time.sleep(random.random())
     world_state = agent_host.getWorldState()
     if world_state.number_of_video_frames_since_last_state > 0:
         print "image to save!"

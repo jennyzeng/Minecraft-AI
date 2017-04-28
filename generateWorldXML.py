@@ -19,7 +19,7 @@ def generateXMLbySeed(srcfile, width, height):
 	    </ServerInitialConditions>
 	    <ServerHandlers>
 	      <FileWorldGenerator src="{src}" forceReset="1" destroyAfterUse="1"/>
-	      <ServerQuitFromTimeUp timeLimitMs="50000"/>
+	      <ServerQuitFromTimeUp timeLimitMs="5000"/>
 	      <ServerQuitWhenAnyAgentFinishes/>
 	    </ServerHandlers>
 	  </ServerSection>
