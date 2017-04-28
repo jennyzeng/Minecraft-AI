@@ -10,17 +10,24 @@ from generateWorldXML import generateXMLbySeed
 #     mission_xml = f.read()
 #     my_mission = MalmoPython.MissionSpec(mission_xml, True)
 #     my_mission_record = MalmoPython.MissionRecordSpec()
-biomes = {"desert":"./seeds/desert.txt",
-          "forest": "./seeds/forest.txt",
-          "mesa":"./seeds/mesa.txt",
-          "eh":"./seeds/extremeHills.txt",
-          "jungle":"./seeds/jungle.txt"}
+
+
+### please replace paths below with your FULL PATH to these files in seeds directory
+###  to use world setting files
+### pay attention to special characters in name (use '\')
+
+biomes = {"desert":"D:\Minecraft-AI\seeds\desert",
+          "forest": "D:\Minecraft-AI\seeds\\forest",
+          "mesa":"D:\Minecraft-AI\seeds\mesa",
+          "eh":"D:\Minecraft-AI\seeds\eh",
+          "jungle":"D:\Minecraft-AI\seeds\jungle"}
 
 try:
 
     missionXML = generateXMLbySeed(biomes["mesa"])
     my_mission = MalmoPython.MissionSpec(missionXML, True)
     my_mission_record = MalmoPython.MissionRecordSpec()
+    my_mission_record.recordMP4(1,100000)
 except Exception as e:
     print "open mission ERROR: ", e
 
@@ -64,17 +71,13 @@ while not world_state.has_mission_begun:
 print
 print "Mission running ",
 
-# agent_host.sendCommand("jump 1")
-# agent_host.sendCommand("jump 0")
-# agent_host.sendCommand("jump 1")
-# agent_host.sendCommand("jump 0")
-# agent_host.sendCommand("jump 1")
 
 agent_host.sendCommand("fly 1")
 # time.sleep(1)
 agent_host.sendCommand("pitch 0.2")
 time.sleep(1)
 agent_host.sendCommand("pitch 0")
+
 # agent_host.sendCommand("jump 0")
 # Loop until mission ends:
 while world_state.is_mission_running:

@@ -5,7 +5,7 @@ http://minecraft.tools/en/custom.php?#seed
 
 
 
-def generateXMLbySeed(seedfile):
+def generateXMLbySeed(srcfile):
 	missionXML = '''<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 	<Mission xmlns="http://ProjectMalmo.microsoft.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
@@ -18,7 +18,7 @@ def generateXMLbySeed(seedfile):
 	        <Time><StartTime>1</StartTime></Time>
 	    </ServerInitialConditions>
 	    <ServerHandlers>
-	      <DefaultWorldGenerator seed="{seed}" forceReset="1" destroyAfterUse="1"/>
+	      <FileWorldGenerator src="{src}" forceReset="1" destroyAfterUse="1"/>
 	      <ServerQuitFromTimeUp timeLimitMs="50000"/>
 	      <ServerQuitWhenAnyAgentFinishes/>
 	    </ServerHandlers>
@@ -37,6 +37,6 @@ def generateXMLbySeed(seedfile):
 
 	</Mission>
 	'''
-	seed = open(seedfile,'r').read()
-	seed=seed.replace("\"", "'")
-	return missionXML.format(seed=seed)
+	# src = open(srcfile,'r').read()
+	# src = src.replace("\"", "'")
+	return missionXML.format(src=srcfile)
