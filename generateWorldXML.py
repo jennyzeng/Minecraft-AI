@@ -4,7 +4,7 @@ http://minecraft.tools/en/custom.php?#seed
 """
 import random
 
-
+# This tests the force-loading by running missions with random start points (x and z vary between +- 10000),
 def generateXMLbySeed(seedfile):
 	xpos = int((random.random() - 0.5) * 20000)
 	zpos = int((random.random() - 0.5) * 20000)
