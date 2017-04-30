@@ -29,7 +29,7 @@ def generateXMLbySeed(seedfile):
 	  <AgentSection mode="Spectator">
 	                <Name>MalmoBot</Name>
 	                <AgentStart>
-			    <Placement x="''' + str(xpos + 0.5) + '''" y="1.0" z="''' + str(zpos + 0.5) + '''"/>
+			    <Placement x="''' + str(xpos + 0.5) + '''" y="227.0" z="''' + str(zpos + 0.5) + '''"/>
 	                    <!--<Placement x="0.5" y="100.0" z="0.5" yaw="90"/>-->
 	                </AgentStart>
 	                <AgentHandlers>
