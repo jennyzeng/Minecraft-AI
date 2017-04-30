@@ -12,22 +12,24 @@ from MC_Img_Preprocess import saveArrayAsImg
 #     mission_xml = f.read()
 #     my_mission = MalmoPython.MissionSpec(mission_xml, True)
 #     my_mission_record = MalmoPython.MissionRecordSpec()
+cur_path = os.getcwd()
 
 
 ### please replace paths below with your FULL PATH to these files in seeds directory
 ###  to use world setting files
 ### pay attention to special characters in name (use '\')
 
-biomes = {"desert":"D:\Minecraft-AI\seeds\desert",
-          "forest": "D:\Minecraft-AI\seeds\\forest",
-          "mesa":"D:\Minecraft-AI\seeds\mesa",
-          "eh":"D:\Minecraft-AI\seeds\eh",
-          "jungle":"D:\Minecraft-AI\seeds\jungle"}
+biomes = {"desert":str(cur_path)+"/seeds/desert",
+          "forest": str(cur_path)+"/seeds/forest",
+          "mesa":str(cur_path)+"/seeds/mesa",
+          "eh": str(cur_path) + "/seeds/eh",
+          "jungle":str(cur_path)+"/seeds/jungle"}
 img_width = 320
 img_height = 200
+biome = 'jungle'
 try:
 
-    missionXML = generateXMLbySeed(biomes["mesa"],img_width,img_height)
+    missionXML = generateXMLbySeed(biomes["jungle"],img_width,img_height)
     my_mission = MalmoPython.MissionSpec(missionXML, True)
     my_mission_record = MalmoPython.MissionRecordSpec("./data.tgz")
     my_mission_record.recordMP4(20, 400000)
@@ -77,15 +79,17 @@ print
 print "Mission running ",
 c = 1
 while world_state.is_mission_running:
-    agent_host.sendCommand("move "+ str((random.random() * 10 - 0.5)))
-    time.sleep(random.random())
-    agent_host.sendCommand( "turn " + str(0.5*(random.random()*2-1)) )
-    time.sleep(random.random())
+    agent_host.sendCommand("move 100")
+    #agent_host.sendCommand("move "+ str((random.random() * 100 - 0.5)))
+    agent_host.sendCommand("turn 1")
+    #time.sleep(random.random())
+    #agent_host.sendCommand( "turn " + str(0.5*(random.random()*2-1)) )
+    #time.sleep(random.random())
     world_state = agent_host.getWorldState()
     if world_state.number_of_video_frames_since_last_state > 0:
         print "image to save!"
         img = world_state.video_frames[-1].pixels
-        saveArrayAsImg(img, img_width, img_height,"./img/test"+str(c)+".jpg")
+        saveArrayAsImg(img, img_width, img_height,"./img/"+biome+'/'+"test"+str(c)+".jpg","./img/"+biome+'/'+"testd"+str(c)+".jpg")
         c+=1
 
 

@@ -28,11 +28,15 @@ def convertToArray(infile):
     arr = np.array(img) # w * h *3 array
     return arr
 
-def saveArrayAsImg(array, width, height, outfile):
+def saveArrayAsImg(array, width, height, outfile, outfile_d):
     array = np.array(array)
-    array = array.reshape(height,width,3)
-    im = Image.fromarray(array,mode='RGB')
+    array = array.reshape(height,width,4)
+    im = Image.fromarray(array[:,:,:3], mode='RGB')
     im.save(outfile)
+    d_array = array[:,:,3:]
+    d_array = d_array.reshape(height,width)
+    im_depth = Image.fromarray(d_array, mode='L')
+    im_depth.save(outfile_d)
 
 #1000*1600
 if __name__ == '__main__':

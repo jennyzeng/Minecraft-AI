@@ -27,11 +27,11 @@ def generateXMLbySeed(srcfile, width, height):
 	  <AgentSection mode="Spectator">
 	                <Name>MalmoBot</Name>
 	                <AgentStart>
-	                    <!--<Placement x="0.5" y="100.0" z="0.5" yaw="90"/>-->
+	                    <!--<Placement x="0.5" y="100" z="0.5" yaw="90"/>-->
 	                </AgentStart>
 	                <AgentHandlers>
 	                <VideoProducer
-					want_depth="0"
+					want_depth="1"
 					viewpoint="2">
 					<Width> {width} </Width>
 					<Height> {height} </Height>
