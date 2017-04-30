@@ -2,10 +2,12 @@
 try different settings on
 http://minecraft.tools/en/custom.php?#seed
 """
+import random
 
 
-
-def generateXMLbySeed(srcfile, width, height):
+def generateXMLbySeed(seedfile):
+	xpos = int((random.random() - 0.5) * 20000)
+	zpos = int((random.random() - 0.5) * 20000)
 	missionXML = '''<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 	<Mission xmlns="http://ProjectMalmo.microsoft.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
@@ -27,6 +29,7 @@ def generateXMLbySeed(srcfile, width, height):
 	  <AgentSection mode="Spectator">
 	                <Name>MalmoBot</Name>
 	                <AgentStart>
+			    <Placement x="''' + str(xpos + 0.5) + '''" y="1.0" z="''' + str(zpos + 0.5) + '''"/>
 	                    <!--<Placement x="0.5" y="100.0" z="0.5" yaw="90"/>-->
 	                </AgentStart>
 	                <AgentHandlers>
