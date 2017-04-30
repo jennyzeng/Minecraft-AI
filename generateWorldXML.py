@@ -2,10 +2,12 @@
 try different settings on
 http://minecraft.tools/en/custom.php?#seed
 """
+import random
 
-
-
-def generateXMLbySeed(srcfile, width, height):
+# This tests the force-loading by running missions with random start points (x and z vary between +- 10000),
+def generateXMLbySeed(seedfile):
+	xpos = int((random.random() - 0.5) * 20000)
+	zpos = int((random.random() - 0.5) * 20000)
 	missionXML = '''<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 	<Mission xmlns="http://ProjectMalmo.microsoft.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
@@ -27,11 +29,12 @@ def generateXMLbySeed(srcfile, width, height):
 	  <AgentSection mode="Spectator">
 	                <Name>MalmoBot</Name>
 	                <AgentStart>
-	                    <!--<Placement x="0.5" y="100" z="0.5" yaw="90"/>-->
+			    <Placement x="''' + str(xpos + 0.5) + '''" y="80.0" z="''' + str(zpos + 0.5) + '''"/>
+	                    <!--<Placement x="0.5" y="100.0" z="0.5" yaw="90"/>-->
 	                </AgentStart>
 	                <AgentHandlers>
 	                <VideoProducer
-					want_depth="1"
+					want_depth="0"
 					viewpoint="2">
 					<Width> {width} </Width>
 					<Height> {height} </Height>
