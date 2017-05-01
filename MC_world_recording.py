@@ -82,6 +82,7 @@ while world_state.is_mission_running:
     agent_host.sendCommand("move 100")
     #agent_host.sendCommand("move "+ str((random.random() * 100 - 0.5)))
     agent_host.sendCommand("turn 1")
+    time.sleep(0.1)
     #time.sleep(random.random())
     #agent_host.sendCommand( "turn " + str(0.5*(random.random()*2-1)) )
     #time.sleep(random.random())
@@ -89,7 +90,7 @@ while world_state.is_mission_running:
     if world_state.number_of_video_frames_since_last_state > 0:
         print "image to save!"
         img = world_state.video_frames[-1].pixels
-        saveArrayAsImg(img, img_width, img_height,"./img/"+biome+'/'+"test"+str(c)+".jpg","./img/"+biome+'/'+"testd"+str(c)+".jpg")
+        saveArrayAsImg(img, img_width, img_height,"./img/"+biome+'/'+biome +str(c)+".jpg","./img/"+biome+'/'+biome+str(c)+"_d"+".jpg")
         c+=1
 
 
