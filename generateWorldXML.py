@@ -34,7 +34,7 @@ def generateXMLbySeed(seedfile):
 	                </AgentStart>
 	                <AgentHandlers>
 	                <VideoProducer
-					want_depth="0"
+					want_depth="1"
 					viewpoint="2">
 					<Width> {width} </Width>
 					<Height> {height} </Height>
