@@ -1,0 +1,5 @@
+http://cs231n.github.io/convolutional-networks/
+https://www.tensorflow.org/tutorials/using_gpu
+https://www.tensorflow.org/programmers_guide/threading_and_queues
+https://www.tensorflow.org/tutorials/layers
+http://cv-tricks.com/tensorflow-tutorial/training-convolutional-neural-network-for-image-classification/
