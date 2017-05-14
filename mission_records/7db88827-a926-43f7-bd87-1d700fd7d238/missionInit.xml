@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<MissionInit xmlns="http://ProjectMalmo.microsoft.com" PlatformVersion="0.21.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ProjectMalmo.microsoft.com MissionInit.xsd">
+  <Mission>
+    <About>
+      <Summary>Generate biome for video record Schema</Summary>
+    </About>
+    <ServerSection>
+      <ServerInitialConditions>
+        <Time>
+          <StartTime>1</StartTime>
+        </Time>
+      </ServerInitialConditions>
+      <ServerHandlers>
+        <FileWorldGenerator destroyAfterUse="true" forceReset="true" src="/Users/xinshen/Documents/school_work/CS175/Malmo-0.21.0-Mac-64bit/Minecraft-AI/seeds/jungle"/>
+        <ServerQuitFromTimeUp description="" timeLimitMs="5000"/>
+        <ServerQuitWhenAnyAgentFinishes description=""/>
+      </ServerHandlers>
+    </ServerSection>
+    <AgentSection mode="Spectator">
+      <Name>MalmoBot</Name>
+      <AgentStart/>
+      <AgentHandlers>
+        <ObservationFromFullStats/>
+        <VideoProducer viewpoint="2" want_depth="true">
+          <Width>320</Width>
+          <Height>200</Height>
+        </VideoProducer>
+        <ContinuousMovementCommands turnSpeedDegs="180"/>
+      </AgentHandlers>
+    </AgentSection>
+  </Mission>
+  <ExperimentUID/>
+  <ClientRole>0</ClientRole>
+  <ClientAgentConnection>
+    <ClientIPAddress>127.0.0.1</ClientIPAddress>
+    <ClientMissionControlPort>10000</ClientMissionControlPort>
+    <ClientCommandsPort>0</ClientCommandsPort>
+    <AgentIPAddress>127.0.0.1</AgentIPAddress>
+    <AgentMissionControlPort>10325</AgentMissionControlPort>
+    <AgentVideoPort>10852</AgentVideoPort>
+    <AgentObservationsPort>10440</AgentObservationsPort>
+    <AgentRewardsPort>10755</AgentRewardsPort>
+  </ClientAgentConnection>
+</MissionInit>

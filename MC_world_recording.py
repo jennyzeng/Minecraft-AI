@@ -29,7 +29,7 @@ img_height = 200
 biome = 'jungle'
 try:
 
-    missionXML = generateXMLbySeed(biomes["jungle"],img_width,img_height)
+    missionXML = generateXMLbySeed(biomes[biome],img_width,img_height)
     my_mission = MalmoPython.MissionSpec(missionXML, True)
     my_mission_record = MalmoPython.MissionRecordSpec("./data.tgz")
     my_mission_record.recordMP4(20, 400000)
@@ -77,12 +77,12 @@ while not world_state.has_mission_begun:
 
 print
 print "Mission running ",
-c = 1
+c = 194
 while world_state.is_mission_running:
     agent_host.sendCommand("move 100")
     #agent_host.sendCommand("move "+ str((random.random() * 100 - 0.5)))
     agent_host.sendCommand("turn 1")
-    time.sleep(0.1)
+    time.sleep(0.01)
     #time.sleep(random.random())
     #agent_host.sendCommand( "turn " + str(0.5*(random.random()*2-1)) )
     #time.sleep(random.random())
