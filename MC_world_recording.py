@@ -12,9 +12,12 @@ from MC_Img_Preprocess import saveArrayAsImg
 #     mission_xml = f.read()
 #     my_mission = MalmoPython.MissionSpec(mission_xml, True)
 #     my_mission_record = MalmoPython.MissionRecordSpec()
+
+#add location of ffmpeg. in terminal, put "which ffmpeg" and you will get it
+if "/usr/local/bin" not in os.environ["PATH"]:
+    os.environ["PATH"] += ":/usr/local/bin"
+
 cur_path = os.getcwd()
-
-
 ### please replace paths below with your FULL PATH to these files in seeds directory
 ###  to use world setting files
 ### pay attention to special characters in name (use '\')
@@ -106,12 +109,33 @@ for i in range(6):
                 #time.sleep(0.1)
                 #agent_host.sendCommand("pitch 0")
 
+<<<<<<< HEAD
                 if world_state.number_of_video_frames_since_last_state > 0:
                     print "image to save!"
                     img = world_state.video_frames[-1].pixels
                     saveArrayAsImg(img, img_width, img_height, "./img/" + biome + '_rgb/' + biome + "_" + str(c) + ".jpg",
                                    "./img/" + biome + '_d/' + biome + "_" + str(c) + "_d" + ".jpg")
                     c += 1
+=======
+print
+print "Mission running ",
+c = 194
+while world_state.is_mission_running:
+    agent_host.sendCommand("move 100")
+    #agent_host.sendCommand("move "+ str((random.random() * 100 - 0.5)))
+    agent_host.sendCommand("turn 1")
+    time.sleep(0.01)
+    #time.sleep(random.random())
+    #agent_host.sendCommand( "turn " + str(0.5*(random.random()*2-1)) )
+    #time.sleep(random.random())
+    world_state = agent_host.getWorldState()
+    if world_state.number_of_video_frames_since_last_state > 0:
+        print "image to save!"
+        img = world_state.video_frames[-1].pixels
+
+        # saveArrayAsImg(img, img_width, img_height,"./img/"+biome+'/'+biome +str(c)+".jpg","./img/"+biome+'/'+biome+str(c)+"_d"+".jpg")
+        c+=1
+>>>>>>> 23e3d64aec6dd49fe9b4c1fc41474aead6b6ecc9
 
                 for error in world_state.errors:
                     print "Error:", error.text
