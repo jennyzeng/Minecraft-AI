@@ -38,9 +38,11 @@ start_time = 0
 #pitch_time = [0, 0.5, 1, 2]
 weather_list = ['rain','thunder','normal','clear',] #'normal','clear','rain',
 time_list = [0, 3000, 6000, 9000, 12000]
-c = 9505
+biome_list = ["desert", "forest", "mesa", "eh", "jungle"]
 
-for i in range(6):
+c = 0
+
+for biome in biome_list:
     for weather in weather_list:
         for start_time in time_list:
             #for pt in pitch_time:
@@ -113,8 +115,8 @@ for i in range(6):
                 if world_state.number_of_video_frames_since_last_state > 0:
                     print "image to save!"
                     img = world_state.video_frames[-1].pixels
-                    saveArrayAsImg(img, img_width, img_height, "./img/" + biome + '_rgb/' + biome + "_" + str(c) + ".jpg",
-                                   "./img/" + biome + '_d/' + biome + "_" + str(c) + "_d" + ".jpg")
+                    saveArrayAsImg(img, img_width, img_height, "./img/" + weather + '_rgb/' + weather +"_" + biome + "_" + str(start_time) +"_" + str(c) + ".jpg",
+                                   "./img/" + weather + '_d/' + weather +"_" + biome + "_" + str(start_time) +"_" + str(c) + "_d" + ".jpg")
                     c += 1
 
 print
@@ -136,9 +138,9 @@ while world_state.is_mission_running:
         # saveArrayAsImg(img, img_width, img_height,"./img/"+biome+'/'+biome +str(c)+".jpg","./img/"+biome+'/'+biome+str(c)+"_d"+".jpg")
         c+=1
 
-                for error in world_state.errors:
-                    print "Error:", error.text
+        for error in world_state.errors:
+            print "Error:", error.text
 
-            print
-            print "Mission ended"
+        print
+        print "Mission ended"
             # Mission has ended.
