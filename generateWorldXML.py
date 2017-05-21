@@ -5,7 +5,7 @@ http://minecraft.tools/en/custom.php?#seed
 import random
 
 # This tests the force-loading by running missions with random start points (x and z vary between +- 10000),
-def generateXMLbySeed(seedfile,width,height):
+def generateXMLbySeed(seedfile,width,height,weather,start_time):
 	xpos = int((random.random() - 0.5) * 20000)
 	zpos = int((random.random() - 0.5) * 20000)
 	missionXML = '''<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
@@ -17,11 +17,13 @@ def generateXMLbySeed(seedfile,width,height):
 
 	  <ServerSection>
 	    <ServerInitialConditions>
-	        <Time><StartTime>1</StartTime></Time>
+	        <Time><StartTime>{start_time}</StartTime>
+	        <AllowPassageOfTime>1</AllowPassageOfTime></Time>
+	    <Weather>{weather}</Weather>    
 	    </ServerInitialConditions>
 	    <ServerHandlers>
 	      <FileWorldGenerator src="{src}" forceReset="1" destroyAfterUse="1"/>
-	      <ServerQuitFromTimeUp timeLimitMs="5000"/>
+	      <ServerQuitFromTimeUp timeLimitMs="50000"/>
 	      <ServerQuitWhenAnyAgentFinishes/>
 	    </ServerHandlers>
 	  </ServerSection>
@@ -46,4 +48,4 @@ def generateXMLbySeed(seedfile,width,height):
 
 	</Mission>
 	'''
-	return missionXML.format(src=seedfile, width=width, height= height)
+	return missionXML.format(src=seedfile, width=width, height= height, weather = weather, start_time = start_time)
