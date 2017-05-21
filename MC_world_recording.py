@@ -109,7 +109,7 @@ for i in range(6):
                 #time.sleep(0.1)
                 #agent_host.sendCommand("pitch 0")
 
-<<<<<<< HEAD
+
                 if world_state.number_of_video_frames_since_last_state > 0:
                     print "image to save!"
                     img = world_state.video_frames[-1].pixels
@@ -135,7 +135,6 @@ while world_state.is_mission_running:
 
         # saveArrayAsImg(img, img_width, img_height,"./img/"+biome+'/'+biome +str(c)+".jpg","./img/"+biome+'/'+biome+str(c)+"_d"+".jpg")
         c+=1
->>>>>>> 23e3d64aec6dd49fe9b4c1fc41474aead6b6ecc9
 
                 for error in world_state.errors:
                     print "Error:", error.text
