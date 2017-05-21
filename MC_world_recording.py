@@ -116,7 +116,7 @@ for i in range(6):
                     saveArrayAsImg(img, img_width, img_height, "./img/" + biome + '_rgb/' + biome + "_" + str(c) + ".jpg",
                                    "./img/" + biome + '_d/' + biome + "_" + str(c) + "_d" + ".jpg")
                     c += 1
-=======
+
 print
 print "Mission running ",
 c = 194
