@@ -12,9 +12,12 @@ from MC_Img_Preprocess import saveArrayAsImg
 #     mission_xml = f.read()
 #     my_mission = MalmoPython.MissionSpec(mission_xml, True)
 #     my_mission_record = MalmoPython.MissionRecordSpec()
+
+#add location of ffmpeg. in terminal, put "which ffmpeg" and you will get it
+if ":/usr/local/bin" not in os.environ["PATH"]:
+    os.environ["PATH"] += ":/usr/local/bin"
+
 cur_path = os.getcwd()
-
-
 ### please replace paths below with your FULL PATH to these files in seeds directory
 ###  to use world setting files
 ### pay attention to special characters in name (use '\')
@@ -90,7 +93,7 @@ while world_state.is_mission_running:
     if world_state.number_of_video_frames_since_last_state > 0:
         print "image to save!"
         img = world_state.video_frames[-1].pixels
-        saveArrayAsImg(img, img_width, img_height,"./img/"+biome+'/'+biome +str(c)+".jpg","./img/"+biome+'/'+biome+str(c)+"_d"+".jpg")
+        # saveArrayAsImg(img, img_width, img_height,"./img/"+biome+'/'+biome +str(c)+".jpg","./img/"+biome+'/'+biome+str(c)+"_d"+".jpg")
         c+=1
 
 
