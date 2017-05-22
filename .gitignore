@@ -438,3 +438,6 @@ tags
 hs_err_pid*
 MCpython/
 !/world.xml
+/img/
+/data.tgz
+/out.jpg

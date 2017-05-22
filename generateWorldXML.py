@@ -17,6 +17,7 @@ def generateXMLbySeed(seedfile,width,height,weather,start_time):
 	    <ServerInitialConditions>
 	        <Time><StartTime>{start_time}</StartTime>
 	        <AllowPassageOfTime>1</AllowPassageOfTime></Time>
+<<<<<<< HEAD
 	    <Weather>{weather}</Weather>
 	    </ServerInitialConditions>
 	    <ServerHandlers>
@@ -72,14 +73,27 @@ def generateXMLbySeed(seedfile,width,height,weather,start_time):
             <ServerQuitFromTimeUp timeLimitMs="1000000"/>
             <ServerQuitWhenAnyAgentFinishes/>
 
+=======
+	    <Weather>{weather}</Weather>    
+	    </ServerInitialConditions>
+	    <ServerHandlers>
+	      <FileWorldGenerator src="{src}" forceReset="1" destroyAfterUse="1"/>
+	      <ServerQuitFromTimeUp timeLimitMs="50000"/>
+	      <ServerQuitWhenAnyAgentFinishes/>
+>>>>>>> 7a0975cc42950830129b6781e27a42cce2d6e77a
 	    </ServerHandlers>
 	  </ServerSection>
 	  <AgentSection mode="Spectator">
 	                <Name>MalmoBot</Name>
 	                <AgentStart>
+<<<<<<< HEAD
 					 <Placement x="4.5" y="4" z="3" pitch="30" yaw="0"/>
 			  <!--   <Placement x="''' + str(xpos + 0.5) + '''" y="80.0" z="''' + str(zpos + 0.5) + '''"/>
 	                    <Placement x="0.5" y="100.0" z="0.5" yaw="90"/>-->
+=======
+			    <Placement x="''' + str(xpos + 0.5) + '''" y="80.0" z="''' + str(zpos + 0.5) + '''"/>
+	                    <!--<Placement x="0.5" y="100.0" z="0.5" yaw="90"/>-->
+>>>>>>> 7a0975cc42950830129b6781e27a42cce2d6e77a
 	                </AgentStart>
 	                <AgentHandlers>
 	                <VideoProducer
@@ -94,4 +108,8 @@ def generateXMLbySeed(seedfile,width,height,weather,start_time):
 	              </AgentSection>
 	</Mission>
 	'''
+<<<<<<< HEAD
 	return missionXML.format(src=seedfile, width=width, height= height, weather = weather, start_time = start_time)
+=======
+	return missionXML.format(src=seedfile, width=width, height= height, weather = weather, start_time = start_time)
+>>>>>>> 7a0975cc42950830129b6781e27a42cce2d6e77a
