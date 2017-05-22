@@ -119,28 +119,6 @@ for biome in biome_list:
                                    "./img/" + weather + '_d/' + weather +"_" + biome + "_" + str(start_time) +"_" + str(c) + "_d" + ".jpg")
                     c += 1
 
-print
-print "Mission running ",
-c = 194
-while world_state.is_mission_running:
-    agent_host.sendCommand("move 100")
-    #agent_host.sendCommand("move "+ str((random.random() * 100 - 0.5)))
-    agent_host.sendCommand("turn 1")
-    time.sleep(0.01)
-    #time.sleep(random.random())
-    #agent_host.sendCommand( "turn " + str(0.5*(random.random()*2-1)) )
-    #time.sleep(random.random())
-    world_state = agent_host.getWorldState()
-    if world_state.number_of_video_frames_since_last_state > 0:
-        print "image to save!"
-        img = world_state.video_frames[-1].pixels
-
-        # saveArrayAsImg(img, img_width, img_height,"./img/"+biome+'/'+biome +str(c)+".jpg","./img/"+biome+'/'+biome+str(c)+"_d"+".jpg")
-        c+=1
-
-        for error in world_state.errors:
-            print "Error:", error.text
-
-        print
-        print "Mission ended"
-            # Mission has ended.
+                print
+                print "Mission running "
+            print "Mission End"
