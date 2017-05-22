@@ -5,7 +5,7 @@ http://minecraft.tools/en/custom.php?#seed
 import random
 
 # This tests the force-loading by running missions with random start points (x and z vary between +- 10000),
-def generateXMLbySeed(seedfile,width,height,weather,start_time):
+def generateXMLbySeed(seedfile,width,height,weather,start_time,entity):
 	xpos = int((random.random() - 0.5) * 20000)
 	zpos = int((random.random() - 0.5) * 20000)
 	missionXML = '''<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
@@ -67,9 +67,15 @@ def generateXMLbySeed(seedfile,width,height,weather,start_time):
 
                 <!-- Pig -->
                 <DrawEntity x="4.5" y="4" z="3.5" type="Pig"/>
+                <DrawEntity x="5" y="4" z="3.5" type="Pig"/>
+                <DrawEntity x="6" y="4" z="3.5" type="Pig"/>
+                <DrawEntity x="7" y="4" z="3.5" type="Pig"/>
+                <DrawEntity x="8" y="4" z="3.5" type="Pig"/>
+                <DrawEntity x="9" y="4" z="3.5" type="Pig"/>
+                <DrawEntity x="10" y="4" z="3.5" type="Pig"/>
 
             </DrawingDecorator>
-            <ServerQuitFromTimeUp timeLimitMs="1000000"/>
+            <ServerQuitFromTimeUp timeLimitMs="3000"/>
             <ServerQuitWhenAnyAgentFinishes/>
 
 	    </ServerHandlers>
@@ -78,7 +84,7 @@ def generateXMLbySeed(seedfile,width,height,weather,start_time):
 	                <Name>MalmoBot</Name>
 	                <AgentStart>
 					 <Placement x="4.5" y="4" z="3" pitch="30" yaw="0"/>
-			  <!--   <Placement x="''' + str(xpos + 0.5) + '''" y="80.0" z="''' + str(zpos + 0.5) + '''"/>
+			  <!--   <Placement x="4.5" y="5" z="3.5"/>
 	                    <Placement x="0.5" y="100.0" z="0.5" yaw="90"/>-->
 	                </AgentStart>
 	                <AgentHandlers>
@@ -94,4 +100,4 @@ def generateXMLbySeed(seedfile,width,height,weather,start_time):
 	              </AgentSection>
 	</Mission>
 	'''
-	return missionXML.format(src=seedfile, width=width, height= height, weather = weather, start_time = start_time)
+	return missionXML.format(src=seedfile, width=width, height= height, weather = weather, start_time = start_time, entity = entity)

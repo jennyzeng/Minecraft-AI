@@ -36,18 +36,19 @@ start_time = 0
 #0 <= value <= 23999
 #choices" 0 = dawn 6000 = noon 18000 = midnight
 #pitch_time = [0, 0.5, 1, 2]
-weather_list = ['rain','thunder','normal','clear',] #'normal','clear','rain',
+weather_list = ['thunder','normal','clear','rain'] #'normal','clear','rain',
 time_list = [0, 3000, 6000, 9000, 12000]
 biome_list = ["desert", "forest", "mesa", "eh", "jungle"]
+entity_list = ['pig','sheep']
 
 c = 0
-
-for biome in biome_list:
-    for weather in weather_list:
-        for start_time in time_list:
+print "executed"
+for weather in weather_list:
+    for start_time in time_list:
+        for entity in entity_list:
             #for pt in pitch_time:
             try:
-                missionXML = generateXMLbySeed(biomes[biome], img_width, img_height, weather, start_time)
+                missionXML = generateXMLbySeed(biomes[biome], img_width, img_height, weather, start_time, entity)
                 my_mission = MalmoPython.MissionSpec(missionXML, True)
                 my_mission_record = MalmoPython.MissionRecordSpec("./data.tgz")
                 my_mission_record.recordMP4(20, 400000)
@@ -101,24 +102,27 @@ for biome in biome_list:
                 # time.sleep(random.random())
                 world_state = agent_host.getWorldState()
                 #current_time = time.time()
-                for i in range(10):
-                    agent_host.sendCommand("move " + str(0.5 * (random.random() * 100 - 0.5)))
-                    agent_host.sendCommand("turn " + str(0.5 * (random.random() * 2 - 1)))
-                    time.sleep(0.1)
+                #for i in range(10):
+                #agent_host.sendCommand("turn -1")
+                agent_host.sendCommand("move 2")
+                agent_host.sendCommand("turn -1")
+                    #agent_host.sendCommand("turn 1")
+                    #agent_host.sendCommand("move " + str(0.5 * (random.random() * 100 - 0.5)))
+                    #agent_host.sendCommand("turn " + str(0.5 * (random.random() * 2 - 1)))
+                time.sleep(0.5)
+                #print "finishing sleeping"
                     #current_time = time.time()
                 #past_time = current_time
                 #agent_host.sendCommand("pitch 0.1")
                 #time.sleep(0.1)
                 #agent_host.sendCommand("pitch 0")
 
-
                 if world_state.number_of_video_frames_since_last_state > 0:
                     print "image to save!"
                     img = world_state.video_frames[-1].pixels
-                    saveArrayAsImg(img, img_width, img_height, "./img/" + weather + '_rgb/' + weather +"_" + biome + "_" + str(start_time) +"_" + str(c) + ".jpg",
-                                   "./img/" + weather + '_d/' + weather +"_" + biome + "_" + str(start_time) +"_" + str(c) + "_d" + ".jpg")
+                    saveArrayAsImg(img, img_width, img_height, "./img/" + entity + '_rgb/' + entity +"_"  + str(c) + ".jpg",
+                                   "./img/" + entity + '_d/' + entity +"_"  + str(c) + "_d" + ".jpg")
                     c += 1
 
-                print
-                print "Mission running "
+                #print "Mission running "
             print "Mission End"
