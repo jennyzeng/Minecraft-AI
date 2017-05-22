@@ -49,7 +49,7 @@ except Exception as e:
     exit(0)
 
 try:
-    missionXML = generateXMLforClassification(biomes['eh'],record_width,record_height)
+    missionXML = generateXMLforClassification(biomes['desert'],record_width,record_height)
     my_mission = MalmoPython.MissionSpec(missionXML, True)
     my_mission_record = MalmoPython.MissionRecordSpec("./data.tgz")
     my_mission_record.recordMP4(20, 400000)
@@ -108,7 +108,7 @@ while world_state.is_mission_running:
         print "tf predictions: ", predictions
         maj = np.bincount(predictions).argmax()
         print "maj for now:", labels[maj]
-        agent_host.sendCommand("chat from tensorflow: this is: {}".format(labels[maj]))
+        agent_host.sendCommand("chat from tensorflow. this is: {}".format(labels[maj]))
         batch_data = []
     time.sleep(0.1)
 
