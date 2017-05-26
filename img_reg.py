@@ -66,7 +66,7 @@ labels =["mesa", "forest","desert","jungle", "eh"]
 IMAGE_HEIGHT = 200
 IMAGE_WIDTH = 320
 NUM_CHANNELS = 3
-BATCH_SIZE = 5
+BATCH_SIZE = 10
 cur_path = os.getcwd()
 checkpoint_file = str(cur_path)+ "/model/model.ckpt"
 biomes = {"desert":str(cur_path)+"/seeds/desert",
@@ -188,12 +188,15 @@ while world_state.is_mission_running:
         predictions = multi_target_forest.fit(X, convertLabel(Y)).predict(X)
         error_rate(predictions,4);
 
+        #This is CNN
+        #predictions=np.argmax(predictions, 1)
 
-       # predictions=np.argmax(predictions, 1)
+        #predictions = sess.run([test_prediction],
+                             # feed_dict={test_data_node: batch_data})[0]
+        ####
 
-       #predictions = sess.run([test_prediction],
-          #                     feed_dict={test_data_node: batch_data})[0]
         predictions = np.argmax(predictions, 1)
+
         print "tf predictions: ", predictions
         maj = np.bincount(predictions).argmax()
         print "maj for now:", labels[maj]
