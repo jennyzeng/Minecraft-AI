@@ -3,32 +3,22 @@ layout: default
 title:  Home
 ---
 
-_Add your text here_
+Our AI recognizes biomes, entities and weathers (we are still working on those ...). When you start playing Minecraft, it supplies you knowledge about the current enviroment:
 
+"Hi, you are in a forest and its raining now"
 
-What's Markdown (`.md`)?
+"Here's a pig in front of you."
 
-Markdown is markup that lets you write hypertext (HTML) documents
-in easy-to-read and easy-to-write plain text.
-No angle brackets `<></>` required for
-paragraphs, lists, blockquotes, tables, etc.
+"You are in the desert with clear weather"
 
+Isn't that cool to have tour guide to walk you through Minecraft?
 
-This is a paragraph (in Markdown). Some more
-text here.
+Here's a screenshot, but you should explore more by playing with the project!
 
-This is another paragraph.
+<img src="demo.png" width="50%">
 
-This is a list:
-
-- Orange
-- Apple
-- Blueberry
+<img src="demo2.png" width="50%">
 
 
 
-Just getting started with Markdown?
-See the [HTML <-> Markdown Quick Reference (Cheat Sheet)][quickref].
 
-
-[quickref]: https://github.com/mundimark/quickrefs/blob/master/HTML.md
