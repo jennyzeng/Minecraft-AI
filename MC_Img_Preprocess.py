@@ -1,6 +1,6 @@
 from PIL import Image
 import numpy as np
-
+import tensorflow as tf
 def imageResize(infile, outfile, size):
     """
     :param infile: input img
@@ -37,6 +37,28 @@ def saveArrayAsImg(array, width, height, outfile, outfile_d):
     d_array = d_array.reshape(height,width)
     im_depth = Image.fromarray(d_array, mode='L')
     im_depth.save(outfile_d)
+
+
+
+# process for tf classification later
+def scaleImg(pixels, target_height, target_width, record_height, record_width):
+    # I reset the want_depth in xml, so now I only have 3 channels
+    img = np.array(pixels)
+    img = img.reshape(record_height, record_width, 3)
+    # img = Image.fromarray(array[:, :, :3], mode='RGB')
+
+    resized_img = tf.image.resize_image_with_crop_or_pad(image=img,
+                                           target_height=target_height,
+                                           target_width=target_width)
+
+    resized_img = resized_img.eval()
+    resized_img = resized_img.astype(np.float32)
+    return (resized_img-(255/2.0)) / 255
+
+
+
+
+
 
 #1000*1600
 if __name__ == '__main__':

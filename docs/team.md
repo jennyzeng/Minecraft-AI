@@ -5,7 +5,7 @@ title:  Team
 
 # {{ page.title }}
 
-
+##Team Name: Biome Recognizer
 ## USER 1
 ***UCI Net ID***: zhaohuaz@uci.edu
 
