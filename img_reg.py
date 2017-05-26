@@ -11,7 +11,7 @@ if 'TF_CPP_MIN_LOG_LEVEL' not in os.environ:
 from MC_Img_Preprocess import scaleImg
 
 #add location of ffmpeg. in terminal, put "which ffmpeg" and you will get it
-if ":/usr/local/bin" not in os.environ["PATH"]:
+if "/usr/local/bin" not in os.environ["PATH"]:
     os.environ["PATH"] += ":/usr/local/bin"
 
 labels =["mesa", "forest","desert","jungle", "eh"]
@@ -19,7 +19,7 @@ labels =["mesa", "forest","desert","jungle", "eh"]
 IMAGE_HEIGHT = 200
 IMAGE_WIDTH = 320
 NUM_CHANNELS = 3
-BATCH_SIZE = 5
+BATCH_SIZE = 10
 cur_path = os.getcwd()
 checkpoint_file = str(cur_path)+ "/model/model.ckpt"
 biomes = {"desert":str(cur_path)+"/seeds/desert",
@@ -37,7 +37,7 @@ try:
     sess.as_default()
     saver = tf.train.import_meta_graph("{}.meta".format(checkpoint_file))
     saver.restore(sess, checkpoint_file)
-    tf.global_variables_initializer().run()
+    # tf.global_variables_initializer().run()
     graph = tf.get_default_graph()
     test_data_node = graph.get_operation_by_name("test_data_node").outputs[0]
     test_prediction = graph.get_operation_by_name("test_prediction").outputs[0]
@@ -51,7 +51,7 @@ except Exception as e:
 try:
     missionXML = generateXMLforClassification(biomes['desert'],record_width,record_height)
     my_mission = MalmoPython.MissionSpec(missionXML, True)
-    my_mission_record = MalmoPython.MissionRecordSpec("./data.tgz")
+    my_mission_record = MalmoPython.MissionRecordSpec('./data.tgz')
     my_mission_record.recordMP4(20, 400000)
 except Exception as e:
     print "open mission ERROR: ", e
