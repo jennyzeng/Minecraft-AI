@@ -5,11 +5,23 @@ title: Status
 
 ## Project summary
 
+​	Our Minecraft-AI project will basically focus on three classifications in Minecraft.Eventually, the player will control  “TinTin”(the character on the left) give a prediction of the biome, current weather and pig occurance continuously while in a Minecraft world and see the correctness.  
+
+<img src="imgs/status/imagen.png" width="90%">
+
+### Goal changes 
+
+​	Instead of just constructing models for biome recognition and giving a simple error rate for each model as the result, we combine our Tensorflow/Sklearn models with Malmo. Therefore, we are able to let agent give a prediction continuously while a player is controlling it in a Minecraft world. Meanwhile, we also add weather and pig recognition. 
+
+### Data collection changes
+
+​	In the proposal, we were supposed to collect at least 500 samples as the training data, but we soon find it insufficient and collect about 50,000 samples eventually. Rather than collecting data in a fixed environment, we generate worlds with different weathers at different time for each biome, which is more complicated than expected. besides, we do not collect the information about temperature. 
+
 ## Approach
 
 ### Data Collection
 
-​	Since we have three different classifications, we need to collect three types of the data. For biome classification, we have collected 50,000 images, namely, 10,000 images per biome. Specifically, we generate a single biome world for each biome type with different weathers and run multiple Malmo sessions in this world to collect data. In this way, we can know the ground truth of each image directly. For weathers classification, we have gathered 1,000 images under five different biomes for each of the four kinds of weather ("rain", "thunder", "clear" and "normal"), that is, 5000 images in total. We think that weather is more structured to recognize biomes, so we decided to collect fewer data. For pig classifications, we only collect 100 images of a pig in a fence since the data of pig is much more structured with many pink blocks.
+​	Since we have three different classifications, we need to collect three types of the data. For biome classification, we have collected 50,000 images, namely, 10,000 images per biome. Specifically, we generate a single biome world for each biome type with different weathers and run multiple Malmo sessions in this world to collect data. In this way, we can know the ground truth of each image directly. For weathers classification, we have gathered 1,000 images under five different biomes for each of the four kinds of weather ("rain", "thunder", "clear" and "normal"), that is, 5000 images in total. We think that weather is more structured to recognize biomes, so we decided to collect fewer data. For the pig classification, we only collect 100 images of a pig in a fence since the data of pig is much more structured with many pink blocks.
 
 ​	In each Malmo session, the agent starts with a random position in the world, and then walk a random distance and rotate an arbitrary angle. We record the whole mission using the recordMP4 function, then get frames from the video every 0.5 seconds and save the array of pixels into images using PIL module. Therefore, for each biome, we collect 10000 screenshots that have different time(morning, noon and night).The image size is 320\*200 pixels, which is smaller than the default Minecraft size (640*400 pixels) to save some storage space. 
 
@@ -27,11 +39,19 @@ title: Status
 
 ### Traditional ML
 
-​	We know that some biomes(datasets) are pretty structured, so we decide to try Traditional Machine learning methods to see if they have better performance in these biomes. Specifically, since the colors(RGB) of desert and mesa are very distinguishable, the dataset for this biome is pretty structured and we want to try SVM and random forest to deal with it.	
+​	We know that some biomes(datasets) are pretty structured, so we decide to try Traditional Machine learning methods to see if they have better performance in these biomes. Specifically, since the colors(RGB) of desert and mesa are very distinguishable, the dataset for this biome is pretty structured and we want to try SVM and random forest to deal with it. For instance,  in Figure 5(Desert),6(Forest),7(Mesa), the construction of each Figure is very different and distinguishable.
 
-​	Since we have three classes, R, G and B, We have tried MultiOutputClassifier with SVM and random forest with njobs=3. SVM is defined by a convex optimisation problem (no local minima) for which there are efficient methods and helps avoid over-fitting. However, SVM was very inefficient to train especially with large dataset. So we prefer using random forest.Random forest, because it is nothing more than a bunch of Decision Trees combined, can handle categorical (binary) features very well. The other main advantage is that, because of how it is constructed (used bagging) these algorithms handle very well high dimensional spaces as well as large number of training examples.	
+​	Since we have three classes, R, G and B, We have tried MultiOutputClassifier with SVM and random forest with njobs=3. SVM is defined by a convex optimisation problem (no local minima) for which there are efficient methods and helps avoid over-fitting. However, SVM was very inefficient to train especially with large dataset. So we prefer using random forest.Random forest, because it is nothing more than a bunch of Decision Trees combined, can handle categorical (binary) features very well. The other main advantage is that, because of how it is constructed (used bagging) these algorithms handle very well high dimensional spaces as well as large number of training examples.
 
 ​	We train our model with our large dataset which transformed 50,000 images for 5 different biomes to txt file. At the end, we test the performance of our training result using the test data in the separated test txt. The test error rate is 5.29%.The figure 1 and 3 in the Evaluation session illustrates more detail about the performance of the result on different biome classes.
+
+<img src="imgs/status/image18.png" width="90%">
+
+<img src="imgs/status/image19.png" width="90%">
+
+<img src="imgs/status/image20.png" width="90%">
+
+
 
 ### CNN
 
@@ -61,16 +81,6 @@ $$i = \frac{\textrm{number of (Predicted label } i \textrm{ AND Actual label } i
 
 ### Quantitative part
 
-​	For quantitation evalution, we want to 
-
-
-
- we get a histogram with 8 bins for each channel, that is, we divide range 0-255 into 8 small ranges. For each bin (e.g. range 0-32), we count the number of cells with value in that range. The histogram shown below represent the result for the mesa image at the left. 
-
-
-
-
-
 ​	Figure 1 and 3 has shown the performance of Random Forest. We train our model with our large dataset which transformed 50,000 images for 5 different biomes to txt file. At the end, we test the performance of our training result using the test data in the separated test txt. The overall test error rate is 5.29%. In figure 3 we calculated the error rate and the incidence proportion.We get the best prediction result for the mesa biome with class label 0, because it predicts 1950 test images correctly and the error rate is 0.9%.But we get pretty bad error rate 9.3% for the eh (extreme hill) biome with label 4 and error rate 9.5% the forest biome with label 1. 
 
 ​	Figure 2 and 4 has shown the performance of CNN. We train our model with our large dataset which contains 50,000 images for 5 different biomes. At the end, we test the performance of our training result using the test data in the separated test tfrecord file. The overall test error rate is 4.7%. The figure below illustrates the performance of the result on different biome classes. We get the best prediction result for the desert biome with class label 0, because it predicts 989 test images correctly and the error rate is 0.8%. But we get the worst error rate 17% for the forest biome with label 1.  
@@ -79,18 +89,28 @@ $$i = \frac{\textrm{number of (Predicted label } i \textrm{ AND Actual label } i
 
 
 
-<img src="imgs/status/image18.png" width="90%">
 
-<img src="imgs/status/image19.png" width="90%">
-
-<img src="imgs/status/image20.png" width="90%">
 
 ### Quality part
+
+​	To evaluate the quality of our project, we combine our two models: CNN and Random Forest with malmo. We are able to let player control  “TinTin”(the agent) give a prediction of the biome continuously while a player is controlling it in a Minecraft world and see the correctness.  In Figure 8, you can see the prediction of CNN and Random Forest at this moment is both dessert and the current accumulated error is  0% for both.In Figure 9, you can see the prediction of CNN and Random Forest at this moment is both forest and the current accumulated error is  0% for both.
 
 <img src="imgs/status/image22.png" width="70%">
 
 
 
 <img src="imgs/status/image21.png" width="70%">
+
+
+
+## Remaining goals and challenges  
+
+### Remaining goals
+
+​	As is stated in the project summary, we have three goals for our project: biome recognization, weather recognization and pig recognizaiton.Up to now, we almost finish the primary goal, namely, biome recognization. For weather recognizaiton and pig recognizaiton, we have already collect the data. For the reamaining of the quarter, we will mainly focus on finishing weather recognizaiton and pig recognization. If we have time, we would better improve the performance of biome recognition. Eventually, the player will control  “TinTin”(the agent) give a prediction of the biome, current weather and pig occurance continuously while in a Minecraft world and see the correctness.  
+
+### Challenges
+
+​	We have faced few challenges during the process of achieving our goals. Even though we have overcame many challenges like constructing CNN or creating a virtualenv and install tf to integrate our models with malmo,we still mainly have two challenges. First of all, one big remaining challenge is to improve the quality of our image. There are some poor quality image for eh biome like below, which have negative effect on our model classifications. Secondly, we need to find a way to combine CNN and Random Forest model and improve the performance.
 
 <img src="imgs/status/image23.png" width="100%">
