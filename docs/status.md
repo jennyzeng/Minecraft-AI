@@ -5,7 +5,7 @@ title: Status
 
 ## Project summary
 
-​	Our Minecraft-AI project will basically focus on three classifications in Minecraft.Eventually, the player will control  “TinTin”(the character on the left) give a prediction of the biome, current weather and pig occurance continuously while in a Minecraft world and see the correctness.  
+​ Our Minecraft-AI project will basically focus on three classifications in Minecraft.Eventually, the player will control  “TinTin”(the character on the left) give a prediction of the biome, current weather and pig occurance continuously while in a Minecraft world and see the correctness.  
 
 <img src="imgs/status/imagen.png" width="90%">
 
