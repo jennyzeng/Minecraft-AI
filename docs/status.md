@@ -3,6 +3,9 @@ layout: default
 title: Status
 ---
 
+
+<div><iframe width="854" height="480" src="https://www.youtube.com/embed/tQSdubw8Bqw" frameborder="0" allowfullscreen></iframe></div>
+
 ## Project summary
 
 ​ Our Minecraft-AI project will basically focus on three classifications in Minecraft.Eventually, the player will control  “TinTin”(the character on the left) give a prediction of the biome, current weather and pig occurance continuously while in a Minecraft world and see the correctness.  

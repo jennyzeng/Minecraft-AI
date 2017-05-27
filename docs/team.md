@@ -5,12 +5,12 @@ title:  Team
 
 # {{ page.title }}
 
-##Team Name: Biome Recognizer
-## USER 1
+##Team Name: The Advanture of Tintin
+## Jenny Zeng
 ***UCI Net ID***: zhaohuaz@uci.edu
 
-## USER 2
+## Xin Shen
 ***UCI Net ID***: shenx3@uci.edu
 
-## USER 3
+## Ariel Xiao
 ***UCI Net ID***: yuweix@uci.edu
