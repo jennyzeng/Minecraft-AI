@@ -79,8 +79,8 @@ biomes = {"desert":str(cur_path)+"/seeds/desert",
           "eh": str(cur_path) + "/seeds/eh",
           "jungle":str(cur_path)+"/seeds/jungle"}
 
-record_height = 400
-record_width = 640
+record_height = 200
+record_width = 320
 sess = None
 try:
     # tf session
@@ -167,7 +167,7 @@ while world_state.is_mission_running:
         print "tf predictions: ", predictions
         maj = np.bincount(predictions).argmax()
         print "maj for now:", labels[maj]
-        agent_host.sendCommand("chat from tensorflow. this is: {}".format(labels[maj]))
+        #agent_host.sendCommand("chat from tensorflow. this is: {}".format(labels[maj]))
         batch_data = []
         if (labels[maj]==labels[nn]):
             correct1+=1

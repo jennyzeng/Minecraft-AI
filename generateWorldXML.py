@@ -78,9 +78,7 @@ def generateXMLbySeed(seedfile,width,height,weather,start_time):#,entity):
 	  <AgentSection mode="Spectator">
 	                <Name>MalmoBot</Name>
 	                <AgentStart>
-					 <Placement x="{xpos}" z="{zpos}" pitch="30" yaw="0"/>
-			  <!--   <Placement x="4.5" y="5" z="3.5"/>
-	                    <Placement x="0.5" y="100.0" z="0.5" yaw="90"/>-->
+					 <Placement x="{xpos}" y=80 z="{zpos}" pitch="30" yaw="0"/>
 	                </AgentStart>
 	                <AgentHandlers>
 	                <VideoProducer
