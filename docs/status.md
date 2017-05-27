@@ -13,7 +13,7 @@ title: Status
 
 ​	In each Malmo session, the agent starts with a random position in the world, and then walk a random distance and rotate an arbitrary angle. We record the whole mission using the recordMP4 function, then get frames from the video every 0.5 seconds and save the array of pixels into images using PIL module. Therefore, for each biome, we collect 10000 screenshots that have different time(morning, noon and night).The image size is 320\*200 pixels, which is smaller than the default Minecraft size (640*400 pixels) to save some storage space. 
 
-![image16](imgs/status/image16.png)
+<img src="imgs/status/image16.png" width="90%">
 
 ​	There may be some errors in our data because our agent sometimes walks into the ground, or inside mountains. Sometimes, the agent collects images that are mostly sky. We tried to delete as much bad data as possible manually.
 
@@ -39,7 +39,7 @@ Some traditional machine learning methods, such as Support Vector Machine (SVM),
 
 We implement a CNN model based on the instructions from [https://www.tensorflow.org/get_started/mnist/mechanics](https://www.tensorflow.org/get_started/mnist/mechanics) and [https://www.tensorflow.org/get_started/mnist/beginners]( https://www.tensorflow.org/get_started/mnist/beginners). First, we pick about 200 images randomly from the training tfrecord as the validation data. Then we reload train tfrecord again for the training data input later. Note that for all the data we feed into the CNN, values in each image are rescaled from [0, 255] down to [-0.5, 0.5] and data type is casted to float32. This is necessary because we feed the data into the training/prediction nodes(represented as tf variables) only accept data in some some specific types. We construct our CNN model which consists of 2 conv2d, 2 relu, 2 max pooling, 1 hidden, and 1 dropout layers.  
 
-![image6](imgs/status/image6.png)
+<img src="imgs/status/image6.png" width="90%">
 
 We train our model with our large dataset which contains 50,000 images for 5 different biomes. At the end, we test the performance of our training result using the test data in the separated test tfrecord file. 
 
@@ -75,15 +75,15 @@ $$i = \frac{\textrm{number of (Predicted label } i \textrm{AND Actual label } i)
 
 ​	Figure 2 and 4 has shown the performance of CNN. We train our model with our large dataset which contains 50,000 images for 5 different biomes. At the end, we test the performance of our training result using the test data in the separated test tfrecord file. The overall test error rate is 4.7%. The figure below illustrates the performance of the result on different biome classes. We get the best prediction result for the desert biome with class label 0, because it predicts 989 test images correctly and the error rate is 0.8%. But we get the worst error rate 17% for the forest biome with label 1.  
 
-![image17](imgs/status/image17.png)
+<img src="imgs/status/image17.png" width="100%">
 
 
 
-![image18](imgs/status/image18.png)
+<img src="imgs/status/image18.png" width="90%">
 
-![image19](imgs/status/image19.png)
+<img src="imgs/status/image19.png" width="90%">
 
-![image20](imgs/status/image20.png)
+<img src="imgs/status/image20.png" width="90%">
 
 ### Quality part
 
