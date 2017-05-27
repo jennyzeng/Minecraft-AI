@@ -53,7 +53,7 @@ We train our model with our large dataset which contains 50,000 images for 5 dif
 
 And Incidence proportion for label 
 
-$$i = \frac{\textrm{number of (Predicted label } i \textrm{AND Actual label } i)}{\textrm{number of Predicted label } i} $$
+$$i = \frac{\textrm{number of (Predicted label } i \textrm{ AND Actual label } i)}{\textrm{number of Predicted label } i} $$
 
  For quality part, we have  
 
@@ -87,10 +87,10 @@ $$i = \frac{\textrm{number of (Predicted label } i \textrm{AND Actual label } i)
 
 ### Quality part
 
-<img src="imgs/status/image21.png" width="70%">
-
-
-
 <img src="imgs/status/image22.png" width="70%">
+
+
+
+<img src="imgs/status/image21.png" width="70%">
 
 <img src="imgs/status/image23.png" width="100%">
