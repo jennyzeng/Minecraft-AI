@@ -4,7 +4,7 @@ title: Status
 ---
 
 
-<div><iframe width="100%" src="https://www.youtube.com/embed/QIMOxfvPPdk" frameborder="0" allowfullscreen></iframe></div>
+<div><iframe width="100%" height="100%" src="https://www.youtube.com/embed/QIMOxfvPPdk" frameborder="0" allowfullscreen></iframe></div>
 
 ## Project summary
 
