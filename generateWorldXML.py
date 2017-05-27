@@ -12,12 +12,13 @@ def generateXMLforClassification(seedfile, width, height):
 	<Mission xmlns="http://ProjectMalmo.microsoft.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
 	  <About>
-		<Summary>Tensorflow biome recognition</Summary>
+		<Summary>The Adventures of Tintin</Summary>
 	  </About>
 
 	  <ServerSection>
 		<ServerInitialConditions>
 			<Time><StartTime>1</StartTime></Time>
+
 		</ServerInitialConditions>
 		<ServerHandlers>
 		  <FileWorldGenerator src="{src}" forceReset="1" destroyAfterUse="1"/>
@@ -27,7 +28,7 @@ def generateXMLforClassification(seedfile, width, height):
 	  </ServerSection>
 
 	  <AgentSection mode="Spectator">
-					<Name>MalmoBot</Name>
+					<Name>Tintin</Name>
 					<AgentStart>
 				<Placement x="''' + str(xpos + 0.5) + '''" y="80.0" z="''' + str(zpos + 0.5) + '''"/>
 						<!--<Placement x="0.5" y="100.0" z="0.5" yaw="90"/>-->
@@ -64,7 +65,7 @@ def generateXMLbySeed(seedfile,width,height,weather,start_time):#,entity):
 	    <ServerInitialConditions>
 	        <Time><StartTime>{start_time}</StartTime>
 	        <AllowPassageOfTime>1</AllowPassageOfTime></Time>
-	    <Weather>{weather}</Weather>
+	    <Weather>thunder</Weather>
 	    </ServerInitialConditions>
 	    <ServerHandlers>
 		<FileWorldGenerator src="{src}" forceReset="1" destroyAfterUse="1"/>
