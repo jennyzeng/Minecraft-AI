@@ -77,8 +77,6 @@ And Incidence proportion for label
 
 $$i = \frac{\textrm{number of (Predicted label } i \textrm{ AND Actual label } i)}{\textrm{number of Predicted label } i} $$
 
- For quality part, we have  
-
 
 
 ### Quantitative part

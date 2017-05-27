@@ -19,6 +19,7 @@ Our first step is to do binary classification on a specific kind of biome (such 
 
 The data we need to collect is the images about the Biome. We will generate biomes with xml in Malmo to capture image data with labels for training and testing. We plan to have at least 500 samples as the training data and first make the samples balanced. If time permits, we will also test the imbalanced data if neeeded.
 
+
 ## AI/ML Algorithms
 
 Recognizing biome is an classification problem. Image recognition/classification is widely applied with Convolutional Neural Network(CNN). Besides CNN, we may also test the performance of SVM classifier, Random Forest, Gradient Boosting, because these are some good methods for solving classification problems. We are also open to other algorithms during research.
