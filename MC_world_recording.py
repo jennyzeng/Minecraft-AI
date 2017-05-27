@@ -3,7 +3,7 @@ import os
 import sys
 import time
 import random
-from generateWorldXML import generateXMLbySeed
+from generateWorldXML import generateXMLbySeed,generateXMLforClassification
 from MC_Img_Preprocess import saveArrayAsImg
 # -- set up the mission -- #
 # mission_file = './world.xml'
@@ -49,7 +49,7 @@ for weather in weather_list:
         # for entity in entity_list:
             #for pt in pitch_time:
             try:
-                missionXML = generateXMLbySeed(biomes[biome], img_width, img_height, weather, start_time)#, entity)
+                missionXML = generateXMLforClassification(biomes['desert'],img_width,img_height)#, entity)
                 my_mission = MalmoPython.MissionSpec(missionXML, True)
                 my_mission_record = MalmoPython.MissionRecordSpec("./data.tgz")
                 my_mission_record.recordMP4(20, 400000)
@@ -116,13 +116,14 @@ for weather in weather_list:
                 #time.sleep(0.1)
                 #agent_host.sendCommand("pitch 0")
                 current_time = time.time()
-                if current_time - past_time > 200 and world_state.number_of_video_frames_since_last_state > 0:
+                if current_time - past_time > 20 and world_state.number_of_video_frames_since_last_state > 0:
                     past_time = current_time
                     save_path =  cur_path+"/img/test/{}.jpg".format(c)
                     print "image to save!"
                     img = world_state.video_frames[-1].pixels
                     saveArrayAsImg(img, img_width, img_height, save_path)
                     c += 1
+
                 time.sleep(0.1)
                 #print "Mission running "
             print "Mission End"
