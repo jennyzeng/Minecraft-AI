@@ -5,7 +5,7 @@ title:  Team
 
 # {{ page.title }}
 
-## Team Name: The Advantures of Tintin (team 34)
+## Team 34
 
 ## Jenny Zeng
 ***UCI Net ID***: zhaohuaz@uci.edu
