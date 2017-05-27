@@ -3,7 +3,7 @@ layout: default
 title:  Home
 ---
 
-Our AI recognizes biomes, entities and weathers (we are still working on those ...). When you start playing Minecraft, it supplies you knowledge about the current enviroment:
+Eventually, the player will control “TinTin”(the character on the left) give a prediction of the biome, current weather and pig occurance continuously while in a Minecraft world and see the correctness.For example, our AI supplies you knowledge about the current enviroment:
 
 "Hi, you are in a forest and its raining now"
 
@@ -13,7 +13,10 @@ Our AI recognizes biomes, entities and weathers (we are still working on those .
 
 Isn't that cool to have tour guide to walk you through Minecraft?
 
-Here's a screenshot, but you should explore more by playing with the project!
+<img src="imgs/status/imagen.png" width="50%">
+
+
+Here's a screenshot, but you would explore more magic by playing with the project!
 
 <img src="demo.png" width="50%">
 
