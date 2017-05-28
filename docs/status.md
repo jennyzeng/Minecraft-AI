@@ -28,7 +28,7 @@ In each Malmo session, the agent starts with a random position in the world, and
 
 The table blow illustrates the actual size of data we collected. 
 
-<img src="imgs/status/table.png" width="30%">
+<img src="imgs/status/table.png" width="10%">
 
 There may be some errors in our data because our agent sometimes walks into the ground, or inside mountains. Sometimes, the agent collects images that are mostly sky. We tried to delete as much bad data as possible manually. This is the reason why we have comparatively small size of data for the eh biome. 
 
@@ -109,7 +109,7 @@ Figure 1 and 3 has shown the performance of Random Forest multi-class classifier
 
 ### Remaining goals
 
-​As is stated in the project summary, we have three goals for our project: biome recognization, weather recognization and pig recognizaiton.Up to now, we almost finish the primary goal, namely, biome recognization. For weather recognizaiton and pig recognizaiton, we have already collect the data. For the reamaining of the quarter, we will mainly focus on finishing weather recognizaiton and pig recognization. If time permits, we would better improve the performance of biome recognition. Eventually, the player will control  “TinTin”(the agent) give a prediction of the biome, current weather and pig occurance continuously while in a Minecraft world and see the correctness.  
+​As is stated in the project summary, we have three goals for our project: biome recognition, weather recognition and pig recognizaiton.Up to now, we almost finish the primary goal, namely, biome recognition. For weather recognizaiton and pig recognizaiton, we have already collect the data. For the reamaining of the quarter, we will mainly focus on finishing weather recognizaiton and pig recognition. If time permits, we would better improve the performance of biome recognition. Eventually, the player will control  “TinTin”(the agent) give a prediction of the biome, current weather and pig occurance continuously while in a Minecraft world and see the correctness.  
 
 ### Challenges
 
