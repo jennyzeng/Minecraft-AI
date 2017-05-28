@@ -28,15 +28,7 @@ In each Malmo session, the agent starts with a random position in the world, and
 
 The table blow illustrates the actual size of data we collected. 
 
-| biome  | number |
-|--------|--------|
-| Mesa   | 10,015 |
-| Forest | 10,047 |
-| Desert | 10,106 |
-| Jungle | 10,238 |
-| EH     | 7,364  |
-| total  | 47,770 |
-
+<img src="imgs/status/table.png" width="30%">
 
 There may be some errors in our data because our agent sometimes walks into the ground, or inside mountains. Sometimes, the agent collects images that are mostly sky. We tried to delete as much bad data as possible manually. This is the reason why we have comparatively small size of data for the eh biome. 
 
