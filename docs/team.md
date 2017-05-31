@@ -5,12 +5,14 @@ title:  Team
 
 # {{ page.title }}
 
+## Team 34
 
-## USER 1
+## Jenny Zeng
 ***UCI Net ID***: zhaohuaz@uci.edu
 
-## USER 2
+## Ariel Xiao
+***UCI Net ID***: yuweix@uci.edu
+
+## Xin Shen
 ***UCI Net ID***: shenx3@uci.edu
 
-## USER 3
-***UCI Net ID***: yuweix@uci.edu
