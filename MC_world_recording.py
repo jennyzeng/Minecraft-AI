@@ -36,13 +36,13 @@ start_time = 0
 #0 <= value <= 23999
 #choices" 0 = dawn 6000 = noon 18000 = midnight
 #pitch_time = [0, 0.5, 1, 2]
-weather_list = ['thunder','normal','clear','rain'] #'normal','clear','rain',
+weather_list = ['normal','clear','thunder','rain'] #'normal','clear','rain',
 time_list = [0, 3000, 6000, 9000, 12000]
 biome_list = ["desert", "forest", "mesa", "eh", "jungle"]
 entity_list = ['pig','sheep']
 
 c = 0
-print "executed"
+
 for weather in weather_list:
     for start_time in time_list:
         for entity in entity_list:
@@ -101,15 +101,16 @@ for weather in weather_list:
                 # agent_host.sendCommand( "turn " + str(0.5*(random.random()*2-1)) )
                 # time.sleep(random.random())
                 world_state = agent_host.getWorldState()
+                #agent_host.sendCommand("move 2")
                 #current_time = time.time()
                 #for i in range(10):
                 #agent_host.sendCommand("turn -1")
-                agent_host.sendCommand("move 2")
-                agent_host.sendCommand("turn -1")
+                #agent_host.sendCommand("move 2")
+                #agent_host.sendCommand("turn -1")
                     #agent_host.sendCommand("turn 1")
                     #agent_host.sendCommand("move " + str(0.5 * (random.random() * 100 - 0.5)))
                     #agent_host.sendCommand("turn " + str(0.5 * (random.random() * 2 - 1)))
-                time.sleep(0.5)
+                #time.sleep(0.5)
                 #print "finishing sleeping"
                     #current_time = time.time()
                 #past_time = current_time
