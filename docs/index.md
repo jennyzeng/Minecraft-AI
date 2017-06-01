@@ -2,18 +2,22 @@
 layout: default
 title:  Home
 ---
+<img src="imgs/status/imagen.png" width="50%">
 
-Our AI recognizes biomes, entities and weathers (we are still working on those ...). When you start playing Minecraft, it supplies you knowledge about the current enviroment:
+Welcome to our CS175 Project in AI repository. Our Minecraft Malmo agent "Tintin"(the character on the left) can give predictions on the biome, current weather and the pig occurance continuously based on the images he perceives. For example, our AI supplies you knowledge about the current enviroment:
 
-"Hi, you are in a forest and its raining now"
+"Hi, you are in a forest."
+
+"Find a place to hide, it is raining now"
 
 "Here's a pig in front of you."
 
-"You are in the desert with clear weather"
+"You are in the desert. Weather is clear now. Enjoy the sunshine."
 
-Isn't that cool to have tour guide to walk you through Minecraft?
+Isn't that cool to have a tour guide to walk you through Minecraft?
 
-Here's a screenshot, but you should explore more by playing with the project!
+
+Here's a screenshot, but you would explore more magic by playing with the project!
 
 <img src="demo.png" width="50%">
 
