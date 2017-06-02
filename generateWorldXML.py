@@ -129,7 +129,11 @@ def generateXMLbySeed(seedfile,width,height,weather,start_time,entity):
 					<Width> {width} </Width>
 					<Height> {height} </Height>
 					</VideoProducer>
-	                  <ObservationFromFullStats/>
+						<ObservationFromNearbyEntities>
+            			<Range name="entities" xrange="40" yrange="2" zrange="40"/>
+          				</ObservationFromNearbyEntities>
+					    <ObservationFromRay/>
+	                    <ObservationFromFullStats/>
 	                </AgentHandlers>
 	              </AgentSection>
 	</Mission>
