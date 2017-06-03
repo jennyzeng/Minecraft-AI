@@ -31,7 +31,7 @@ img_width = 320
 img_height = 200
 weather = 'clear'
 # available weather choices: 'normal'|'clear'|'rain'|'thunder'
-biome = 'eh'
+biome = "jungle"
 start_time = 0
 #0 <= value <= 23999
 #choices" 0 = dawn 6000 = noon 18000 = midnight
@@ -41,7 +41,7 @@ time_list = [0, 3000, 6000, 9000, 12000]
 biome_list = ["desert", "forest", "mesa", "eh", "jungle"]
 entity_list = ['pig','sheep']
 
-c = 0
+c = 200
 
 for weather in weather_list:
     for start_time in time_list:
@@ -119,11 +119,14 @@ for weather in weather_list:
                 #agent_host.sendCommand("pitch 0")
 
                 if world_state.number_of_video_frames_since_last_state > 0:
-                    print "image to save!"
-                    img = world_state.video_frames[-1].pixels
-                    saveArrayAsImg(img, img_width, img_height, "./img/" + entity + '_rgb/' + entity +"_"  + str(c) + ".jpg",
-                                   "./img/" + entity + '_d/' + entity +"_"  + str(c) + "_d" + ".jpg")
-                    c += 1
+                    cur_time = time.time()
+                    if cur_time - past_time > 3:
+                        print "image to save!"
+                        img = world_state.video_frames[-1].pixels
+                        saveArrayAsImg(img, img_width, img_height, "./img/" + entity + '_rgb/' + entity +"_"  + str(c) + ".jpg",
+                                       "./img/" + entity + '_d/' + entity +"_"  + str(c) + "_d" + ".jpg")
+                        c += 1
+                        past_time = cur_time
 
                 #print "Mission running "
             print "Mission End"
