@@ -31,7 +31,7 @@ img_width = 320
 img_height = 200
 weather = 'clear'
 # available weather choices: 'normal'|'clear'|'rain'|'thunder'
-biome = "jungle"
+biome = "eh"
 start_time = 0
 #0 <= value <= 23999
 #choices" 0 = dawn 6000 = noon 18000 = midnight
@@ -41,7 +41,7 @@ time_list = [0, 3000, 6000, 9000, 12000]
 biome_list = ["desert", "forest", "mesa", "eh", "jungle"]
 entity_list = ['pig','sheep']
 
-c = 200
+c = 327
 
 for weather in weather_list:
     for start_time in time_list:
