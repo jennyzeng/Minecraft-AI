@@ -15,6 +15,52 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.utils import shuffle
 import numpy as np
 import glob
+from sklearn.externals import joblib
+
+# config tf
+if 'TF_CPP_MIN_LOG_LEVEL' not in os.environ:
+    os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+from MC_Img_Preprocess import scaleImg
+
+#add location of ffmpeg. in terminal, put "which ffmpeg" and you will get it
+if "/usr/local/bin" not in os.environ["PATH"]:
+    os.environ["PATH"] += ":/usr/local/bin"
+
+
+labels =["mesa", "forest","desert","jungle", "eh"]
+labelp =["no_pig","pig"]
+COLOR = ('b','g','r') # channel order in array
+
+
+nn=1
+
+IMAGE_HEIGHT = 200
+IMAGE_WIDTH = 320
+NUM_CHANNELS = 3
+BATCH_SIZE = 10
+cur_path = os.getcwd()
+
+
+###model for pig classsification
+pig_file=str(cur_path)+ "/sklearn_model/pig.pkl"
+pig_model = joblib.load(pig_file)
+
+
+
+### model for biome classification
+checkpoint_file = str(cur_path)+ "/model/model.ckpt"
+
+
+biomes = {"desert":str(cur_path)+"/seeds/desert",
+          "forest": str(cur_path)+"/seeds/forest",
+          "mesa":str(cur_path)+"/seeds/mesa",
+          "eh": str(cur_path) + "/seeds/eh",
+          "jungle":str(cur_path)+"/seeds/jungle"}
+
+record_height = 200
+record_width = 320
+sess = None
+
 
 #helper function
 
@@ -52,36 +98,6 @@ print('Done')
 
 #####
 
-# config tf
-if 'TF_CPP_MIN_LOG_LEVEL' not in os.environ:
-    os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
-from MC_Img_Preprocess import scaleImg
-
-#add location of ffmpeg. in terminal, put "which ffmpeg" and you will get it
-if "/usr/local/bin" not in os.environ["PATH"]:
-    os.environ["PATH"] += ":/usr/local/bin"
-
-labels =["mesa", "forest","desert","jungle", "eh"]
-COLOR = ('b','g','r') # channel order in array
-
-
-nn=4
-
-IMAGE_HEIGHT = 200
-IMAGE_WIDTH = 320
-NUM_CHANNELS = 3
-BATCH_SIZE = 10
-cur_path = os.getcwd()
-checkpoint_file = str(cur_path)+ "/model/model.ckpt"
-biomes = {"desert":str(cur_path)+"/seeds/desert",
-          "forest": str(cur_path)+"/seeds/forest",
-          "mesa":str(cur_path)+"/seeds/mesa",
-          "eh": str(cur_path) + "/seeds/eh",
-          "jungle":str(cur_path)+"/seeds/jungle"}
-
-record_height = 200
-record_width = 320
-sess = None
 try:
     # tf session
     sess = tf.InteractiveSession()
@@ -98,6 +114,11 @@ except Exception as e:
         print "tf sess closed"
     print "Tensorflow init session ERROR:", e
     exit(0)
+
+
+
+
+
 
 try:
     missionXML = generateXMLforClassification(biomes[labels[nn]],record_width,record_height)
@@ -139,6 +160,9 @@ while not world_state.has_mission_begun:
     sys.stdout.write(".")
     time.sleep(0.1)
     world_state = agent_host.getWorldState()
+
+
+
     for error in world_state.errors:
         print "Error:",error.text
 
@@ -152,12 +176,15 @@ correct2=0
 
 while world_state.is_mission_running:
     world_state = agent_host.getWorldState()
+    if len(world_state.observations) >0:
+        print str(world_state.observations[-1])
     if world_state.number_of_video_frames_since_last_state > 0:
         pixels = world_state.video_frames[-1].pixels
         batch_data.append(scaleImg(pixels,IMAGE_HEIGHT, IMAGE_WIDTH, record_height, record_width))
 
     if len(batch_data) == BATCH_SIZE:
         img_list = np.array(batch_data)
+
 
         ###
         # This is CNN
@@ -173,8 +200,8 @@ while world_state.is_mission_running:
             correct1+=1
 
         counter = counter + 1
-        print correct1, counter
-        print
+        #print correct1, counter
+        #print
 
         ####
 
@@ -208,6 +235,16 @@ while world_state.is_mission_running:
         agent_host.sendCommand("chat Current error rate for CNN: {}% ".format(err1))
         agent_host.sendCommand("chat Current error rate for Random Forest: {}% ".format(err2))
         ###
+
+
+
+
+
+
+
+
+
+
 
 
 

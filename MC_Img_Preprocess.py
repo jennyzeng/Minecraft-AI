@@ -37,7 +37,7 @@ def saveArrayAsImg(array, width, height, outfile, wantDepth=False, outfile_d=Non
         d_array = array[:,:,3:]
         d_array = d_array.reshape(height,width)
         im_depth = Image.fromarray(d_array, mode='L')
-        im_depth.save(outfile_d)
+        #im_depth.save(outfile_d)
     else:
 
         array = array.reshape(height,width,3)
