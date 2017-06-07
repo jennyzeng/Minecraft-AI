@@ -116,29 +116,26 @@ print('Done')
 #####
 
 try:
-    print "trying"
     model_biome = import_graph.ImportGraph(checkpoint_file)
     print "init biome model"
     model_pig = import_graph.ImportGraph(pig_checkpoint_file)
     print "init pig model"
 
     test_data_node = model_biome.graph.get_operation_by_name("test_data_node").outputs[0]
-    print "biome data shape"
-    print test_data_node.shape
 
     test_prediction = model_biome.graph.get_operation_by_name("test_prediction").outputs[0]
 
     pig_test_data_node = model_pig.graph.get_operation_by_name("test_data_node").outputs[0]
-    print "pig data shape"
-    print pig_test_data_node.shape
     pig_test_prediction = model_pig.graph.get_operation_by_name("test_prediction").outputs[0]
 
 
 except Exception as e:
-    if model_biome.sess:
-        model_biome.sess.close()
     if model_pig.sess:
-        model_pig.sess.close()
+        model_pig.close()
+
+    if model_biome.sess:
+        model_biome.close()
+
 
     print "Tensorflow init session ERROR:", e
     exit(0)
@@ -197,8 +194,7 @@ while not world_state.has_mission_begun:
 print
 print "Mission running ",
 batch_data = []
-batch_data_p = []
-BATCH_SIZE_P = 10
+
 
 counter=0
 correct1=0
@@ -211,11 +207,9 @@ while world_state.is_mission_running:
     if world_state.number_of_video_frames_since_last_state > 0:
         pixels = world_state.video_frames[-1].pixels
         batch_data.append(scaleImg(pixels,IMAGE_HEIGHT, IMAGE_WIDTH, record_height, record_width))
-        batch_data_p.append(scaleImg(pixels,IMAGE_HEIGHT, IMAGE_WIDTH, record_height, record_width))
     if len(batch_data) == BATCH_SIZE:
         img_list = np.array(batch_data)
-    if len(batch_data_p) == BATCH_SIZE:
-        img_list = np.array(batch_data_p)
+
 
 
         ###
@@ -224,8 +218,8 @@ while world_state.is_mission_running:
         predictions = model_biome.run([test_prediction],
                                    feed_dict={test_data_node: batch_data})[0]
         predictions = np.argmax(predictions, 1)
-        predictions_p = model_pig.run([pig_test_prediction], feed_dict={pig_test_data_node: batch_data_p})[0]
-        predictions_p = np.argmax(predictions, 1)
+        predictions_p = model_pig.run([pig_test_prediction], feed_dict={pig_test_data_node: batch_data})[0]
+        predictions_p = np.argmax(predictions_p, 1)
         print "tf predictions: ", predictions
         maj = np.bincount(predictions).argmax()
         print "maj for now:", labels[maj]
@@ -294,5 +288,6 @@ print "Total error rate for CNN: {}% ".format(err3)
 print "Total error rate for Random Forest: {}% ".format(err4)
 ###
 
-model_biome.sess.close()
-model_pig.sess.close()
+model_pig.close()
+model_biome.close()
+
