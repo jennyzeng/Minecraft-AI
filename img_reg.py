@@ -2,6 +2,7 @@ import tensorflow as tf
 import numpy as np
 import os
 from generateWorldXML import generateXMLforClassification
+from generateWorldXML import generateXMLbySeed
 import MalmoPython
 import sys
 import time
@@ -146,7 +147,7 @@ except Exception as e:
 
 
 try:
-    missionXML = generateXMLforClassification(biomes[labels[nn]],record_width,record_height)
+    missionXML = generateXMLbySeed(biomes[labels[nn]],record_width,record_height,'normal','6000','pig')
     my_mission = MalmoPython.MissionSpec(missionXML, True)
     my_mission_record = MalmoPython.MissionRecordSpec('./data.tgz')
     my_mission_record.recordMP4(20, 400000)
