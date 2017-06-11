@@ -2,6 +2,7 @@ import tensorflow as tf
 import numpy as np
 import os
 from generateWorldXML import generateXMLforClassification
+from generateWorldXML import generateXMLbySeed
 import MalmoPython
 import sys
 import time
@@ -16,6 +17,7 @@ from sklearn.utils import shuffle
 import numpy as np
 import glob
 from sklearn.externals import joblib
+import import_graph
 
 # config tf
 if 'TF_CPP_MIN_LOG_LEVEL' not in os.environ:
@@ -33,6 +35,9 @@ COLOR = ('b','g','r') # channel order in array
 
 
 nn=1
+nnp = 2
+
+recog_pig = False
 
 IMAGE_HEIGHT = 200
 IMAGE_WIDTH = 320
@@ -47,8 +52,12 @@ pig_model = joblib.load(pig_file)
 
 
 
-### model for biome classification
-checkpoint_file = str(cur_path)+ "/model/model.ckpt"
+### CNN model for biome classification
+checkpoint_file = str(cur_path)+ "/model/biome_model/model.ckpt"
+### CNN model for pig classification
+pig_checkpoint_file = str(cur_path) + "/model/pig_model2/pig_model.ckpt"
+
+
 
 
 biomes = {"desert":str(cur_path)+"/seeds/desert",
@@ -56,6 +65,9 @@ biomes = {"desert":str(cur_path)+"/seeds/desert",
           "mesa":str(cur_path)+"/seeds/mesa",
           "eh": str(cur_path) + "/seeds/eh",
           "jungle":str(cur_path)+"/seeds/jungle"}
+
+biomes_for_pig_rec = {"forest": str(cur_path)+"/seeds/forest",
+                      "eh": str(cur_path) + "/seeds/eh"}
 
 record_height = 200
 record_width = 320
@@ -79,6 +91,9 @@ def convertImage(img,label,NUM_BINS,COLOR):
 def convertLabel(lab):
     return (np.arange(5) == lab[:, None]).astype(np.float32)
 
+def convertLabelp(labp):
+    return (np.arange(2) == labp[:, None]).astype(np.float32)
+
 
 def error_rate(predictions, labels):
    # Return the error rate and confusions.
@@ -94,24 +109,35 @@ def error_rate(predictions, labels):
 
     return error, confusions
 
+
+
 print('Done')
+
 
 #####
 
 try:
-    # tf session
-    sess = tf.InteractiveSession()
-    sess.as_default()
-    saver = tf.train.import_meta_graph("{}.meta".format(checkpoint_file))
-    saver.restore(sess, checkpoint_file)
-    # tf.global_variables_initializer().run()
-    graph = tf.get_default_graph()
-    test_data_node = graph.get_operation_by_name("test_data_node").outputs[0]
-    test_prediction = graph.get_operation_by_name("test_prediction").outputs[0]
+    model_biome = import_graph.ImportGraph(checkpoint_file)
+    print "init biome model"
+    model_pig = import_graph.ImportGraph(pig_checkpoint_file)
+    print "init pig model"
+
+    test_data_node = model_biome.graph.get_operation_by_name("test_data_node").outputs[0]
+
+    test_prediction = model_biome.graph.get_operation_by_name("test_prediction").outputs[0]
+
+    pig_test_data_node = model_pig.graph.get_operation_by_name("test_data_node").outputs[0]
+    pig_test_prediction = model_pig.graph.get_operation_by_name("test_prediction").outputs[0]
+
+
 except Exception as e:
-    if sess:
-        sess.close()
-        print "tf sess closed"
+    if model_pig.sess:
+        model_pig.close()
+
+    if model_biome.sess:
+        model_biome.close()
+
+
     print "Tensorflow init session ERROR:", e
     exit(0)
 
@@ -121,7 +147,7 @@ except Exception as e:
 
 
 try:
-    missionXML = generateXMLforClassification(biomes[labels[nn]],record_width,record_height)
+    missionXML = generateXMLbySeed(biomes[labels[nn]],record_width,record_height,'normal','6000','pig')
     my_mission = MalmoPython.MissionSpec(missionXML, True)
     my_mission_record = MalmoPython.MissionRecordSpec('./data.tgz')
     my_mission_record.recordMP4(20, 400000)
@@ -144,7 +170,7 @@ if agent_host.receivedArgument("help"):
 max_retries = 3
 for retry in range(max_retries):
     try:
-        agent_host.startMission( my_mission, my_mission_record )
+        agent_host.startMission(my_mission, my_mission_record)
         break
     except RuntimeError as e:
         if retry == max_retries - 1:
@@ -170,6 +196,7 @@ print
 print "Mission running ",
 batch_data = []
 
+
 counter=0
 correct1=0
 correct2=0
@@ -181,29 +208,33 @@ while world_state.is_mission_running:
     if world_state.number_of_video_frames_since_last_state > 0:
         pixels = world_state.video_frames[-1].pixels
         batch_data.append(scaleImg(pixels,IMAGE_HEIGHT, IMAGE_WIDTH, record_height, record_width))
-
     if len(batch_data) == BATCH_SIZE:
         img_list = np.array(batch_data)
 
 
+
         ###
         # This is CNN
-        predictions = sess.run([test_prediction],
-                               feed_dict={test_data_node: batch_data})[0]
+        print "batch size biome"
+        predictions = model_biome.run([test_prediction],
+                                   feed_dict={test_data_node: batch_data})[0]
         predictions = np.argmax(predictions, 1)
+        predictions_p = model_pig.run([pig_test_prediction], feed_dict={pig_test_data_node: batch_data})[0]
+        predictions_p = np.argmax(predictions_p, 1)
         print "tf predictions: ", predictions
         maj = np.bincount(predictions).argmax()
         print "maj for now:", labels[maj]
+        print "tf predictions of pig: ", predictions_p
         #agent_host.sendCommand("chat from tensorflow. this is: {}".format(labels[maj]))
         batch_data = []
         if (labels[maj]==labels[nn]):
             correct1+=1
 
         counter = counter + 1
-        #print correct1, counter
-        #print
+            #print correct1, counter
+            #print
 
-        ####
+            ####
 
         ####traditional ML:
 
@@ -258,5 +289,6 @@ print "Total error rate for CNN: {}% ".format(err3)
 print "Total error rate for Random Forest: {}% ".format(err4)
 ###
 
-sess.close()
+model_pig.close()
+model_biome.close()
 

@@ -63,8 +63,9 @@ def generateXMLbySeed(seedfile,width,height,weather,start_time,entity):
 	    <ServerHandlers>
 	    	<FileWorldGenerator src="{src}" forceReset="1" destroyAfterUse="1"/>
 	    	<DrawingDecorator>
-	    	<DrawEntity x="7585.37" y="88.2493" z= "9366.05" type="Pig"/>
-			
+	    	<DrawEntity x="7589.95" y="88.2493" z="9366.49" type="Pig"/>
+			<DrawEntity x="7585.95" y="88.2493" z="9366.49" type="Pig"/>
+			<DrawEntity x="7585.95" y="88.2493" z="9356.49" type="Pig"/>
 	    	</DrawingDecorator>
             <ServerQuitFromTimeUp timeLimitMs="80000"/>
             <ServerQuitWhenAnyAgentFinishes/>
@@ -73,7 +74,7 @@ def generateXMLbySeed(seedfile,width,height,weather,start_time,entity):
 	  <AgentSection mode="Spectator">
 	                <Name>MalmoBot</Name>
 	                <AgentStart>
-					 <Placement x="7585.37" y="88.2493" z= "9366.05" pitch="30" yaw="0"/>
+					 <Placement x="7589.95" y="88.2493" z="9366.49" pitch="30" yaw="0"/>
 			  <!--   <Placement x="4.5" y="5" z="3.5"/>
 	                    <Placement x="4.5" y="4" z="3.5" yaw="90"/>-->
 	                </AgentStart>
