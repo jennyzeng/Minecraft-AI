@@ -46,8 +46,8 @@ BATCH_SIZE = 10
 cur_path = os.getcwd()
 
 
-###model for pig classsification
-pig_file=str(cur_path)+ "/sklearn_model/pig.pkl"
+###model for  classsification
+pig_file=str(cur_path)+ "/sklearn_model/weather.pkl"
 pig_model = joblib.load(pig_file)
 
 
