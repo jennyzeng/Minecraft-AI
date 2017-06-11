@@ -5,6 +5,7 @@ http://minecraft.tools/en/custom.php?#seed
 import random
 
 # This tests the force-loading by running missions with random start points (x and z vary between +- 10000),
+# For pig recognition, only generate eh and forest
 def generateXMLforClassification(seedfile, width, height):
 	xpos = int((random.random() - 0.5) * 20000)
 	zpos = int((random.random() - 0.5) * 20000)
@@ -63,9 +64,9 @@ def generateXMLbySeed(seedfile,width,height,weather,start_time,entity):
 	    <ServerHandlers>
 	    	<FileWorldGenerator src="{src}" forceReset="1" destroyAfterUse="1"/>
 	    	<DrawingDecorator>
-	    	<DrawEntity x="7589.95" y="88.2493" z="9366.49" type="Pig"/>
-			<DrawEntity x="7585.95" y="88.2493" z="9366.49" type="Pig"/>
-			<DrawEntity x="7585.95" y="88.2493" z="9356.49" type="Pig"/>
+	    	<DrawEntity x="7589.95" y="88.2493" z="9366.49" type="Sheep"/>
+			<DrawEntity x="7585.95" y="88.2493" z="9366.49" type="Sheep"/>
+			<DrawEntity x="7585.95" y="88.2493" z="9356.49" type="Sheep"/>
 	    	</DrawingDecorator>
             <ServerQuitFromTimeUp timeLimitMs="80000"/>
             <ServerQuitWhenAnyAgentFinishes/>
@@ -74,13 +75,13 @@ def generateXMLbySeed(seedfile,width,height,weather,start_time,entity):
 	  <AgentSection mode="Spectator">
 	                <Name>MalmoBot</Name>
 	                <AgentStart>
-					 <Placement x="7589.95" y="88.2493" z="9366.49" pitch="30" yaw="0"/>
+					<Placement x="7584.06" y="95.3649" z="9600.54" pitch="30" yaw="0"/>
 			  <!--   <Placement x="4.5" y="5" z="3.5"/>
 	                    <Placement x="4.5" y="4" z="3.5" yaw="90"/>-->
 	                </AgentStart>
 	                <AgentHandlers>
 	                <VideoProducer
-					want_depth="1"
+					want_depth="0"
 					viewpoint="0">
 					<Width> {width} </Width>
 					<Height> {height} </Height>
