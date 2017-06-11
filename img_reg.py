@@ -35,7 +35,7 @@ COLOR = ('b','g','r') # channel order in array
 labelw = ['normal',"rain", "thunder"]
 
 
-nn=4
+nn=1
 nnp = 2
 nnw = 0
 
@@ -77,6 +77,8 @@ biomes = {"desert":str(cur_path)+"/seeds/desert",
 biomes_for_pig_rec = {"forest": str(cur_path)+"/seeds/forest",
                       "eh": str(cur_path) + "/seeds/eh"}
 
+
+
 record_height = 400
 record_width = 640
 sess = None
@@ -115,19 +117,6 @@ def error_rate(predictions, labels):
 
     return error, confusions
 
-def error_rate_weather(predictions, labels):
-    correct = np.sum(np.argmax(predictions, 1) == np.argmax(labels, 1))
-    total = predictions.shape[0]
-
-    error = 100.0 - (100 * float(correct) / float(total))
-
-    confusions = np.zeros([5, 5], np.float32)
-    bundled = zip(np.argmax(predictions, 1), np.argmax(labels, 1))
-    for predicted, actual in bundled:
-        confusions[predicted, actual] += 1
-
-    return error, confusions
-
 
 
 print('Done')
@@ -138,7 +127,7 @@ print('Done')
 try:
     model_biome = import_graph.ImportGraph(checkpoint_file)
     #print "init biome model"
-    #model_pig = import_graph.ImportGraph(pig_checkpoint_file)
+    model_pig = import_graph.ImportGraph(pig_checkpoint_file)
     print "init pig model"
     model_weather = import_graph.ImportGraph(weather_checkpoint_file)
     print "init weather model"
@@ -146,8 +135,8 @@ try:
     test_data_node = model_biome.graph.get_operation_by_name("test_data_node").outputs[0]
     test_prediction = model_biome.graph.get_operation_by_name("test_prediction").outputs[0]
 
-    #pig_test_data_node = model_pig.graph.get_operation_by_name("test_data_node").outputs[0]
-    #pig_test_prediction = model_pig.graph.get_operation_by_name("test_prediction").outputs[0]
+    pig_test_data_node = model_pig.graph.get_operation_by_name("test_data_node").outputs[0]
+    pig_test_prediction = model_pig.graph.get_operation_by_name("test_prediction").outputs[0]
 
     weather_test_data_node = model_weather.graph.get_operation_by_name("test_data_node").outputs[0]
     weather_test_prediction = model_weather.graph.get_operation_by_name("test_prediction").outputs[0]
@@ -156,8 +145,8 @@ except Exception as e:
     if model_weather.sess:
         model_weather.close()
 
-    # if model_pig.sess:
-    #     model_pig.close()
+    if model_pig.sess:
+        model_pig.close()
     #
     if model_biome.sess:
          model_biome.close()
@@ -172,7 +161,7 @@ except Exception as e:
 
 
 try:
-    missionXML = generateXMLbySeed(biomes[labels[nn]],record_width,record_height,'normal','6000','pig')
+    missionXML = generateXMLbySeed(biomes[labels[nn]],record_width,record_height,labelw[nnw],'6000','pig')
     my_mission = MalmoPython.MissionSpec(missionXML, True)
     my_mission_record = MalmoPython.MissionRecordSpec('./data.tgz')
     my_mission_record.recordMP4(20, 400000)
@@ -250,17 +239,17 @@ while world_state.is_mission_running:
         predictions = model_biome.run([test_prediction],
                                     feed_dict={test_data_node: batch_data})[0]
         predictions = np.argmax(predictions, 1)
-        # predictions_p = model_pig.run([pig_test_prediction], feed_dict={pig_test_data_node: batch_data[:5]})[0]
-        # predictions_p = np.argmax(predictions_p, 1)
+        predictions_p = model_pig.run([pig_test_prediction], feed_dict={pig_test_data_node: batch_data[:5]})[0]
+        predictions_p = np.argmax(predictions_p, 1)
         predictions_w = model_weather.run([weather_test_prediction], feed_dict={weather_test_data_node:batch_data})[0]
         predictions_w = np.argmax(predictions_w, 1)
         # print "tf predictions: ", predictions
         maj = np.bincount(predictions).argmax()
-        #print "maj for now:", labels[maj]
-        #print "tf predictions of pig: ", predictions_p
+        print "maj for now:", labels[maj]
+        print "tf predictions of pig: ", predictions_p
         print "tf prediction of weather", predictions_w
         maj_w = np.bincount(predictions_w).argmax()
-        #maj_p = np.bincount(predictions_p).argmax()
+        maj_p = np.bincount(predictions_p).argmax()
         #agent_host.sendCommand("chat from tensorflow. this is: {}".format(labels[maj]))
 
         batch_data = []
@@ -271,7 +260,7 @@ while world_state.is_mission_running:
         # if (labelp[maj_p] == labels[nnp]):
         #     correct2 = correct2 + 1
 
-        if (labelw[maj_w] == labels[nnw]):
+        if (labelw[maj_w] == labelw[nnw]):
             correct2 = correct2 + 1
 
 
@@ -280,7 +269,7 @@ while world_state.is_mission_running:
         counter = counter + 1
 
         print "error rate calc"
-        print correct1, counter
+        print correct2, counter
             #print
 
             ####
@@ -330,7 +319,8 @@ while world_state.is_mission_running:
         #agent_host.sendCommand("chat from Random Forest weather prediction. this is: {}".format(labelw[majw]))
 
         #animal
-        #agent_host.sendCommand("chat from CNN animal prediction. this is: {}".format(labelp[maj_p]))
+        if labelp[maj_p] != 0:
+            agent_host.sendCommand("chat from CNN animal prediction. this is: {}".format(labelp[maj_p]))
         #agent_host.sendCommand("chat from Random Forest animal prediction. this is: {}".format(labelp[majp]))
 
         ###error rate
@@ -344,8 +334,8 @@ while world_state.is_mission_running:
         err2 = float(counter-correct2) / float(counter)
         # err3 = float(counter-correct3) / float(counter)
         # #print err1
-        print "This is biome CNN error rate  ",err1
-        print "This is weather CNN error rate  ",err2
+        print "This is biome CNN error rate  ", err1
+        print "This is weather CNN error rate  ", err2
 
 
         agent_host.sendCommand("chat Current error rate for CNN biome prediction : {}% ".format(err1))
@@ -369,13 +359,13 @@ while world_state.is_mission_running:
 
 ###error rate
 print counter
-print correct1
+print correct2
 err3 = (counter-correct1) / counter
 err4 = (counter-correct2) / counter
 print "Total error rate for CNN: {}% ".format(err3)
 print "Total error rate for Random Forest: {}% ".format(err4)
 ###
 model_weather.close()
-#model_pig.close()
-#model_biome.close()
+model_pig.close()
+model_biome.close()
 
