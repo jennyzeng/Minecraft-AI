@@ -32,6 +32,7 @@ if "/usr/local/bin" not in os.environ["PATH"]:
 labels =["mesa", "forest","desert","jungle", "eh"]
 labelp =["no_pig","pig"]
 COLOR = ('b','g','r') # channel order in array
+labelw = ['normal',"rain", "thunder"]
 
 
 nn=1
@@ -98,6 +99,19 @@ def convertLabelp(labp):
 
 def error_rate(predictions, labels):
    # Return the error rate and confusions.
+    correct = np.sum(np.argmax(predictions, 1) == np.argmax(labels, 1))
+    total = predictions.shape[0]
+
+    error = 100.0 - (100 * float(correct) / float(total))
+
+    confusions = np.zeros([5, 5], np.float32)
+    bundled = zip(np.argmax(predictions, 1), np.argmax(labels, 1))
+    for predicted, actual in bundled:
+        confusions[predicted, actual] += 1
+
+    return error, confusions
+
+def error_rate_weather(predictions, labels):
     correct = np.sum(np.argmax(predictions, 1) == np.argmax(labels, 1))
     total = predictions.shape[0]
 
@@ -236,6 +250,8 @@ while world_state.is_mission_running:
         print "maj for now:", labels[maj]
         print "tf predictions of pig: ", predictions_p
         print "tf prediction of weather", predictions_w
+        maj_w = np.bincount(predictions_w).argmax()
+        maj_p = np.bincount(predictions_p).argmax()
         #agent_host.sendCommand("chat from tensorflow. this is: {}".format(labels[maj]))
         batch_data = []
         if (labels[maj]==labels[nn]):
@@ -263,8 +279,10 @@ while world_state.is_mission_running:
         maj1 = np.bincount(predictions1).argmax()
         print "maj for now:", labels[maj1]
 
-
+        agent_host.sendCommand("chat from tensorflow. this is: {}".format(labels[maj]))
         agent_host.sendCommand("chat from Random Forest. this is: {}".format(labels[maj1]))
+        agent_host.sendCommand("chat from CNN weather prediction. this is: {}".format(labelw[maj_w]))
+        agent_host.sendCommand("chat from CNN animal prediction. this is: {}".format(labelp[maj_p]))
 
         ###error rate
         if (labels[maj1] == labels[nn]):
@@ -298,7 +316,7 @@ err4 = (counter-correct2) / counter
 print "Total error rate for CNN: {}% ".format(err3)
 print "Total error rate for Random Forest: {}% ".format(err4)
 ###
-
+model_weather.close()
 model_pig.close()
 model_biome.close()
 

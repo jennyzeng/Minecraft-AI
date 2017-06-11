@@ -91,6 +91,7 @@ def generateXMLbySeed(seedfile,width,height,weather,start_time,entity):
           				</ObservationFromNearbyEntities>
 					    <ObservationFromRay/>
 	                    <ObservationFromFullStats/>
+	                    <ChatCommands/>
 	                </AgentHandlers>
 	              </AgentSection>
 	</Mission>
