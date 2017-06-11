@@ -30,13 +30,14 @@ if "/usr/local/bin" not in os.environ["PATH"]:
 
 
 labels =["mesa", "forest","desert","jungle", "eh"]
-labelp =["no_pig","pig"]
+labelp =["None","Pig","Chicken","Cow"]
 COLOR = ('b','g','r') # channel order in array
 labelw = ['normal',"rain", "thunder"]
 
 
-nn=1
+nn=4
 nnp = 2
+nnw = 0
 
 recog_pig = False
 
@@ -47,16 +48,21 @@ BATCH_SIZE = 10
 cur_path = os.getcwd()
 
 
-###model for pig classsification
-pig_file=str(cur_path)+ "/sklearn_model/pig.pkl"
-pig_model = joblib.load(pig_file)
+###sklearn model for animal classsification
+rf_animal_file= str(cur_path) + "/sklearn_model/animal.pkl"
+rf_animal_model = joblib.load(rf_animal_file)
 
+rf_biome_file = str(cur_path) + "/sklearn_model/biome.pkl"
+rf_biome_model = joblib.load(rf_biome_file)
+
+rf_weather_file = str(cur_path) + '/sklearn_model/weather.pkl'
+rf_weather_model = joblib.load(rf_weather_file)
 
 
 ### CNN model for biome classification
 checkpoint_file = str(cur_path)+ "/model/biome_model/model.ckpt"
 ### CNN model for pig classification
-pig_checkpoint_file = str(cur_path) + "/model/pig_model2/pig_model.ckpt"
+pig_checkpoint_file = str(cur_path) + "/model/pig_model/pig_model.ckpt"
 weather_checkpoint_file = str(cur_path) + "/model/weather_model2_no_normal/weather_model.ckpt"
 
 
@@ -71,8 +77,8 @@ biomes = {"desert":str(cur_path)+"/seeds/desert",
 biomes_for_pig_rec = {"forest": str(cur_path)+"/seeds/forest",
                       "eh": str(cur_path) + "/seeds/eh"}
 
-record_height = 200
-record_width = 320
+record_height = 400
+record_width = 640
 sess = None
 
 
@@ -81,7 +87,7 @@ sess = None
 def convertImage(img,label,NUM_BINS,COLOR):
    # img=cv2.imread(img_path)
    # img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-    hist = np.zeros((NUM_BINS,5))
+    hist = np.zeros((NUM_BINS,3))
     bins = np.linspace(0, 256, NUM_BINS)
     for i,col in enumerate(COLOR):
         histr = cv2.calcHist([img],[i],None,[NUM_BINS],[0,256])
@@ -90,11 +96,9 @@ def convertImage(img,label,NUM_BINS,COLOR):
     hist = np.append(hist, label)
     return hist
 
-def convertLabel(lab):
-    return (np.arange(5) == lab[:, None]).astype(np.float32)
+def convertLabel(lab, num_labels=5):
+    return (np.arange(num_labels) == lab[:, None]).astype(np.float32)
 
-def convertLabelp(labp):
-    return (np.arange(2) == labp[:, None]).astype(np.float32)
 
 
 def error_rate(predictions, labels):
@@ -133,8 +137,8 @@ print('Done')
 
 try:
     model_biome = import_graph.ImportGraph(checkpoint_file)
-    print "init biome model"
-    model_pig = import_graph.ImportGraph(pig_checkpoint_file)
+    #print "init biome model"
+    #model_pig = import_graph.ImportGraph(pig_checkpoint_file)
     print "init pig model"
     model_weather = import_graph.ImportGraph(weather_checkpoint_file)
     print "init weather model"
@@ -142,22 +146,21 @@ try:
     test_data_node = model_biome.graph.get_operation_by_name("test_data_node").outputs[0]
     test_prediction = model_biome.graph.get_operation_by_name("test_prediction").outputs[0]
 
-    pig_test_data_node = model_pig.graph.get_operation_by_name("test_data_node").outputs[0]
-    pig_test_prediction = model_pig.graph.get_operation_by_name("test_prediction").outputs[0]
+    #pig_test_data_node = model_pig.graph.get_operation_by_name("test_data_node").outputs[0]
+    #pig_test_prediction = model_pig.graph.get_operation_by_name("test_prediction").outputs[0]
 
     weather_test_data_node = model_weather.graph.get_operation_by_name("test_data_node").outputs[0]
     weather_test_prediction = model_weather.graph.get_operation_by_name("test_prediction").outputs[0]
-
 
 except Exception as e:
     if model_weather.sess:
         model_weather.close()
 
-    if model_pig.sess:
-        model_pig.close()
-
+    # if model_pig.sess:
+    #     model_pig.close()
+    #
     if model_biome.sess:
-        model_biome.close()
+         model_biome.close()
 
 
     print "Tensorflow init session ERROR:", e
@@ -217,82 +220,137 @@ while not world_state.has_mission_begun:
 print
 print "Mission running ",
 batch_data = []
+batch_data_p = []
 
 
 counter=0
+correct = 0
 correct1=0
 correct2=0
+correct3 = 0
+
+BATCH_SIZE_P = 5
 
 while world_state.is_mission_running:
     world_state = agent_host.getWorldState()
-    if len(world_state.observations) >0:
-        print str(world_state.observations[-1])
     if world_state.number_of_video_frames_since_last_state > 0:
         pixels = world_state.video_frames[-1].pixels
         batch_data.append(scaleImg(pixels,IMAGE_HEIGHT, IMAGE_WIDTH, record_height, record_width))
+
     if len(batch_data) == BATCH_SIZE:
         img_list = np.array(batch_data)
 
 
 
+
+
+
         ###
         # This is CNN
-        print "batch size biome"
         predictions = model_biome.run([test_prediction],
-                                   feed_dict={test_data_node: batch_data})[0]
+                                    feed_dict={test_data_node: batch_data})[0]
         predictions = np.argmax(predictions, 1)
-        predictions_p = model_pig.run([pig_test_prediction], feed_dict={pig_test_data_node: batch_data})[0]
-        predictions_p = np.argmax(predictions_p, 1)
+        # predictions_p = model_pig.run([pig_test_prediction], feed_dict={pig_test_data_node: batch_data[:5]})[0]
+        # predictions_p = np.argmax(predictions_p, 1)
         predictions_w = model_weather.run([weather_test_prediction], feed_dict={weather_test_data_node:batch_data})[0]
         predictions_w = np.argmax(predictions_w, 1)
-        print "tf predictions: ", predictions
+        # print "tf predictions: ", predictions
         maj = np.bincount(predictions).argmax()
-        print "maj for now:", labels[maj]
-        print "tf predictions of pig: ", predictions_p
+        #print "maj for now:", labels[maj]
+        #print "tf predictions of pig: ", predictions_p
         print "tf prediction of weather", predictions_w
         maj_w = np.bincount(predictions_w).argmax()
-        maj_p = np.bincount(predictions_p).argmax()
+        #maj_p = np.bincount(predictions_p).argmax()
         #agent_host.sendCommand("chat from tensorflow. this is: {}".format(labels[maj]))
+
         batch_data = []
         if (labels[maj]==labels[nn]):
             correct1+=1
 
+
+        # if (labelp[maj_p] == labels[nnp]):
+        #     correct2 = correct2 + 1
+
+        if (labelw[maj_w] == labels[nnw]):
+            correct2 = correct2 + 1
+
+
+
+
         counter = counter + 1
-            #print correct1, counter
+
+        print "error rate calc"
+        print correct1, counter
             #print
 
             ####
 
         ####traditional ML:
+        #data = np.array([convertImage(img_dir, nn, 8, COLOR) for img_dir in img_list])
 
-        data = np.array([convertImage(img_dir, nn, BATCH_SIZE, COLOR) for img_dir in img_list])
+        #X = data[:, :-1]
+        #Y = data[:, -1].astype(np.int64)
 
-        np.random.shuffle(data)
-        X = data[:, :-1]
-        Y = data[:, -1].astype(np.int64)
-        forest = RandomForestClassifier(n_estimators=100, random_state=1)
-        multi_target_forest = MultiOutputClassifier(forest, n_jobs=3)
-        predictions1 = multi_target_forest.fit(X, convertLabel(Y)).predict(X)
+        ###biome
 
-        predictions1 = np.argmax(predictions1, 1)
-        print "RF predictions: ", predictions1
-        maj1 = np.bincount(predictions1).argmax()
-        print "maj for now:", labels[maj1]
+        # predictionsb = rf_biome_model.predict(X)
+        # predictionsb = np.argmax(predictionsb, 1)
+        # print "RF predictions: ", predictionsb
+        # majb = np.bincount(predictionsb).argmax()
+        # print "maj for now:", labels[majb]
 
-        agent_host.sendCommand("chat from tensorflow. this is: {}".format(labels[maj]))
-        agent_host.sendCommand("chat from Random Forest. this is: {}".format(labels[maj1]))
+
+
+        ##weather
+
+        # predictionsw = rf_weather_model.predict(X)
+        #
+        # predictionsw = np.argmax(predictionsw, 1)
+        # print "RF predictions of weather: ", predictionsw
+        # majw = np.bincount(predictionsw).argmax()
+        # print "maj for now:", labelw[majw]majw
+
+
+        ##animal
+        # predictionsp= rf_animal_model.predict(X)
+        #
+        # predictionsp = np.argmax(predictionsp, 1)
+        # print "RF predictions of pig: ", predictionsp
+        # majp= np.bincount(predictionsp).argmax()
+        # print "maj for now:", labelp[majp]
+
+
+        ##send chat
+        ##biome
+        agent_host.sendCommand("chat from CNN biome prediction. this is: {}".format(labels[maj]))
+        #agent_host.sendCommand("chat from Random Forest. this is: {}".format(labels[majb]))
+
+        #weather
         agent_host.sendCommand("chat from CNN weather prediction. this is: {}".format(labelw[maj_w]))
-        agent_host.sendCommand("chat from CNN animal prediction. this is: {}".format(labelp[maj_p]))
+        #agent_host.sendCommand("chat from Random Forest weather prediction. this is: {}".format(labelw[majw]))
+
+        #animal
+        #agent_host.sendCommand("chat from CNN animal prediction. this is: {}".format(labelp[maj_p]))
+        #agent_host.sendCommand("chat from Random Forest animal prediction. this is: {}".format(labelp[majp]))
 
         ###error rate
-        if (labels[maj1] == labels[nn]):
-            correct2 = correct2 + 1
+
+        ##biome error rate
+
+
 
 
         err1 = float(counter-correct1) / float(counter)
         err2 = float(counter-correct2) / float(counter)
-        agent_host.sendCommand("chat Current error rate for CNN: {}% ".format(err1))
-        agent_host.sendCommand("chat Current error rate for Random Forest: {}% ".format(err2))
+        # err3 = float(counter-correct3) / float(counter)
+        # #print err1
+        print "This is biome CNN error rate  ",err1
+        print "This is weather CNN error rate  ",err2
+
+
+        agent_host.sendCommand("chat Current error rate for CNN biome prediction : {}% ".format(err1))
+        agent_host.sendCommand("chat Current error rate for CNN weather prediction: {}% ".format(err2))
+        #agent_host.sendCommand("chat Current error rate for CNN weather prediction: {}%".format(err3))
         ###
 
 
@@ -310,13 +368,14 @@ while world_state.is_mission_running:
     time.sleep(0.1)
 
 ###error rate
-
+print counter
+print correct1
 err3 = (counter-correct1) / counter
 err4 = (counter-correct2) / counter
 print "Total error rate for CNN: {}% ".format(err3)
 print "Total error rate for Random Forest: {}% ".format(err4)
 ###
 model_weather.close()
-model_pig.close()
-model_biome.close()
+#model_pig.close()
+#model_biome.close()
 
