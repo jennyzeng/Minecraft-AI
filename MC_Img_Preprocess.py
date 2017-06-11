@@ -30,19 +30,19 @@ def convertToArray(infile):
 
 def saveArrayAsImg(array, width, height, outfile, wantDepth=False, outfile_d=None):
     array = np.array(array)
-    if wantDepth:
-        array = array.reshape(height,width,4)
-        im = Image.fromarray(array[:,:,:3], mode='RGB')
-        im.save(outfile)
-        d_array = array[:,:,3:]
-        d_array = d_array.reshape(height,width)
-        im_depth = Image.fromarray(d_array, mode='L')
-        #im_depth.save(outfile_d)
-    else:
+    # if wantDepth:
+    #     array = array.reshape(height,width,4)
+    #     im = Image.fromarray(array[:,:,:3], mode='RGB')
+    #     im.save(outfile)
+    #     d_array = array[:,:,3:]
+    #     d_array = d_array.reshape(height,width)
+    #     im_depth = Image.fromarray(d_array, mode='L')
+    #     #im_depth.save(outfile_d)
+    # else:
 
-        array = array.reshape(height,width,3)
-        im = Image.fromarray(array, mode='RGB')
-        im.save(outfile)
+    array = array.reshape(height,width,3)
+    im = Image.fromarray(array, mode='RGB')
+    im.save(outfile)
     return True
 
 # process for tf classification later
