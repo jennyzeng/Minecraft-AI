@@ -1,10 +1,12 @@
-import MalmoPython
 import os
 import sys
 import time
-import random
-from generateWorldXML import generateXMLbySeed
-from MC_Img_Preprocess import saveArrayAsImg
+
+import MalmoPython
+
+from src.Assets.generateWorldXML import generateXMLbySeed
+from src.Img_Preprocess.MC_Img_Preprocess import saveArrayAsImg
+
 # -- set up the mission -- #
 # mission_file = './world.xml'
 # with open(mission_file, 'r') as f:

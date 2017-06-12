@@ -19,9 +19,9 @@ Isn't that cool to have a tour guide to walk you through Minecraft?
 
 Here's a screenshot, but you would explore more magic by playing with the project!
 
-<img src="demo.png" width="50%">
+<img src="imgs/demo.png" width="50%">
 
-<img src="demo2.png" width="50%">
+<img src="imgs/demo2.png" width="50%">
 
 
 
