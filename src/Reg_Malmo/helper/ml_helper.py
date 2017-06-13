@@ -63,4 +63,4 @@ class ML_Helper:
         :param err: a list like [0,1,0]
         :return: the portion of 1 in it.
         """
-        return 100.0 * float(sum(err)) / (float(len(err)))
+        return 100.0 * float(sum(err)) / (float(len(err))+(len(err)==0))

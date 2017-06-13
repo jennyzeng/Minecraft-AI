@@ -32,6 +32,19 @@ class Init_Helper:
             exit(0)
 
     @staticmethod
+    def init_sk_model(pkl_file):
+        from sklearn.externals import joblib
+        print "init sk learn models", pkl_file
+        try:
+            model = joblib.load(pkl_file)
+            print "init sk learn models succeeded"
+            return model
+        except Exception as e:
+            print "sk init session ERROR: ", e
+
+
+
+    @staticmethod
     def init_mission(summary, record_width, record_height, target_biome, weather, time, entity):
         try:
             print "init mission..."
