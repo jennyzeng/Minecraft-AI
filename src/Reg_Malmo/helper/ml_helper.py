@@ -48,11 +48,11 @@ class ML_Helper:
         """
         :param predictions: a np array of prediction labels
         :return: only return the majority in prediction if
-                the occurrence of maj >= len(predictions)
+                the occurrence of maj >= len(predictions)//2
                 else return None
         """
         maj = np.bincount(predictions).argmax()
-        if (predictions==maj).sum() >= len(predictions):
+        if (predictions == maj).sum() >= len(predictions)//2:
             return maj
         return None
 
@@ -60,7 +60,7 @@ class ML_Helper:
     @staticmethod
     def array_err_rate(err):
         """
-        :param err: array like [0,1,0]
+        :param err: a list like [0,1,0]
         :return: the portion of 1 in it.
         """
-        return 1 - (sum(err) / float(len(err)))
+        return 100.0 * float(sum(err)) / (float(len(err)))

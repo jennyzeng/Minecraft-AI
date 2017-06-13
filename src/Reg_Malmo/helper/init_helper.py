@@ -1,14 +1,13 @@
-from src.Assets.generateWorldXML import generateXMLbySeed
+from src.Assets.generateWorldXML import XML_Generator
 from src.Reg_Malmo import import_graph
-
 import MalmoPython
-import os
 import sys
 import time
 
 
 class Init_Helper:
-    proj_path = "/Users/xinshen/Documents/school_work/CS175/Malmo-0.21.0-Mac-64bit/Minecraft-AI"
+
+    proj_path = '/Users/jennyzeng/Dropbox/cs/CS175/groupProject'
     biomes = {"desert": str(proj_path) + "/src/Assets/seeds/desert",
               "forest": str(proj_path) + "/src/Assets/seeds/forest",
               "mesa": str(proj_path) + "/src/Assets/seeds/mesa",
@@ -18,11 +17,13 @@ class Init_Helper:
 
     @staticmethod
     def init_tf_model(checkpoint_file):
+        print "init tf models....",checkpoint_file
         model = None
         try:
             model = import_graph.ImportGraph(checkpoint_file)
             test_data_node = model.graph.get_operation_by_name("test_data_node").outputs[0]
             test_prediction = model.graph.get_operation_by_name("test_prediction").outputs[0]
+            print "init tf models succeeded"
             return model, test_data_node, test_prediction
         except Exception as e:
             print "Tensorflow init session ERROR:", e
@@ -31,21 +32,26 @@ class Init_Helper:
             exit(0)
 
     @staticmethod
-    def init_mission(record_width, record_height, target_biome, weather, time, entity):
+    def init_mission(summary, record_width, record_height, target_biome, weather, time, entity):
         try:
-            missionXML = generateXMLbySeed(Init_Helper.biomes[target_biome], record_width, record_height, weather, time, entity)
+            print "init mission..."
+            missionXML = XML_Generator.generateXMLbySeed(summary, Init_Helper.biomes[target_biome],
+                                           record_width, record_height, weather, time, entity)
             my_mission = MalmoPython.MissionSpec(missionXML, True)
             my_mission_record = MalmoPython.MissionRecordSpec('./data.tgz')
             my_mission_record.recordMP4(20, 400000)
+            print "init mission succeeded"
             return my_mission, my_mission_record
         except Exception as e:
             print "open mission ERROR: ", e
 
     @staticmethod
     def init_agent():
-        agent_host = MalmoPython.AgentHost()
+        print "init agent host..."
         try:
+            agent_host = MalmoPython.AgentHost()
             agent_host.parse(sys.argv)
+            print "init agent host succeeded"
             return agent_host
         except RuntimeError as e:
             print 'ERROR:', e
@@ -58,6 +64,7 @@ class Init_Helper:
     @staticmethod
     def start_mission(agent_host, my_mission, my_mission_record):
         # Attempt to start a mission:
+        print "start mission..."
         max_retries = 3
         for retry in range(max_retries):
             try:
