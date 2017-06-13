@@ -70,17 +70,15 @@ After we train our model, we test the performance of our training result using t
 
 ## Evaluation
 
-​Our evaluation plan has two parts. One is the quantity evaluation and the other is the quality evaluation. In the quantity evaluation, we use the sparated test data that is also collected by the agent earlier in the Minecraft world, and give the error rate and the incidence proportion after we train our model. In the quality evaluation part, we combine our models with Malmo in Minecraft. We control our agent to walk in a Minecraft world with a single biome, and test the actual error rate based on the images the agent perceived in the Malmo mission.
+Our evaluation plan has two parts. One is the quantity evaluation and the other is the quality evaluation. In the quantity evaluation, we use the sparated test data that is also collected by the agent earlier in the Minecraft world, and give the error rate and the incidence proportion after we train our model. In the quality evaluation part, we combine our models with Malmo in Minecraft. We control our agent to walk in a Minecraft world with a single biome, and test the actual error rate based on the images the agent perceived in the Malmo mission.
 
 ### Quantitative part
 
-For the quantity evaluation, we use separated training data and test data to train the model and to assess the correctness. we have calculated the error rate and the incidence proportion for both CNN and random forest model with following two formula. 
+For the quantity evaluation, we use separated training data and test data to train the model and to assess the correctness. we have calculated the error rate and the incidence proportion for both CNN and random forest model with following two formulas. 
 
- $$i = \frac{\textrm{number of (Predicted label } i \textrm{ AND Actual label i)}}{\textrm{number of Actual label i}} $$ 
+ $$ \textrm{Error rate of }i = \frac{\textrm{number of (Predicted label } i \textrm{ AND Actual label i)}}{\textrm{number of Actual label i}} $$ 
 
-And Incidence proportion for label 
-
-$$i = \frac{\textrm{number of (Predicted label } i \textrm{ AND Actual label } i)}{\textrm{number of Predicted label } i} $$
+$$ \textrm{Incidence proportion of }i = \frac{\textrm{number of (Predicted label } i \textrm{ AND Actual label } i)}{\textrm{number of Predicted label } i} $$
 
 
 Note that for the CNN model, we separate our dataset to training data and test data with a ratio of 9:1 but in the random forest classifier, we separate it to be 8:2. The result may be affected. 
