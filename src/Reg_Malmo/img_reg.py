@@ -6,8 +6,8 @@ from sklearn.externals import joblib
 
 
 
-target_biome_label = 1
-target_weather_label = 0
+target_biome_label = 4
+target_weather_label = 1
 
 recog_pig = False
 
@@ -105,8 +105,8 @@ while world_state.is_mission_running:
 
 		err1 = float(counter - correct1) / float(counter)
 		err2 = float(counter - correct2) / float(counter)
-		agent_host.sendCommand("chat Current error rate for CNN: {}% ".format(err1))
-		agent_host.sendCommand("chat Current error rate for Random Forest: {}% ".format(err2))
+		agent_host.sendCommand("chat Current error rate for CNN biome: {}% ".format(err1))
+		agent_host.sendCommand("chat Current error rate for CNN weather: {}% ".format(err2))
 		###
 
 	time.sleep(0.1)

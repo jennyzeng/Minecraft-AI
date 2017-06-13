@@ -16,7 +16,7 @@ biomes = {"desert": str(proj_path) + "/src/Assets/seeds/desert",
           "jungle": str(proj_path) + "/src/Assets/seeds/jungle"}
 
 labels = ["mesa", "forest", "desert", "jungle", "eh"]
-labelp = ["no_pig", "pig"]
+labelp = ["None","Pig","Chicken","Cow"]
 COLOR = ('b', 'g', 'r')  # channel order in array
 labelw = ['normal', "rain", "thunder"]
 
