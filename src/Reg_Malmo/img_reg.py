@@ -1,123 +1,130 @@
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.multioutput import MultiOutputClassifier
-from src.Reg_Malmo.helper import *
+from src.Reg_Malmo.helper import Init_Helper as IH
+from src.Reg_Malmo.helper import ML_Helper as MH
 from src.Img_Preprocess.MC_Img_Preprocess import scaleImg
-from sklearn.externals import joblib
+import numpy as np
+import time
 
 
+class Tintin:
+    # Malmo Config
+    REG_PIG = False
+    RECORD_HEIGHT = 400
+    RECORD_WIDTH = 640
 
-target_biome_label = 4
-target_weather_label = 1
+    # training config
+    IMAGE_HEIGHT = 200
+    IMAGE_WIDTH = 320
+    NUM_CHANNELS = 3
 
-recog_pig = False
+    def __init__(self, rec_config, targets):
+        """
+        :param rec_config: recognition type configurations
+        :param targets: target configuration
+        """
+        # init CNN models
+        self.models = {}
+        for k, v in rec_config.items():
+            model, node, pre = IH.init_tf_model(v['ckpt'])
+            self.models[k] = {'model': model, 'node': node, 'prediction': pre,
+                              'batch_size': v['batch_size'], 'labels': v['labels'],
+                              'err': [] # if correct, append 1, else 0
 
-IMAGE_HEIGHT = 200
-IMAGE_WIDTH = 320
-NUM_CHANNELS = 3
-BATCH_SIZE = 10
-proj_path = '/Users/xinshen/Documents/school_work/CS175/Malmo-0.21.0-Mac-64bit/Minecraft-AI'
+                              }
+        self.targets = targets
+        # init Malmo mission
+        self.my_mission, self.my_mission_record = IH.init_mission(self.RECORD_WIDTH, self.RECORD_HEIGHT,
+                                                        self.targets['rec_type']['biome'][0],
+                                                        self.targets['rec_type']['weather'][0],
+                                                        self.targets['time'], self.targets['rec_type']['animal'][0])
+        self.agent_host = IH.init_agent()
+        IH.start_mission(self.agent_host, self.my_mission, self.my_mission_record)
+        IH.wait_till_start(self.agent_host)
+        self.batch_data = []
 
 
-### CNN model for biome classification
-biome_checkpoint_file = str(proj_path) + "/model/biome_model/model.ckpt"
-### CNN model for pig classification
-pig_checkpoint_file = str(proj_path) + "/model/pig_model/pig_model.ckpt"
-weather_checkpoint_file = str(proj_path) + "/model/weather_model2_no_normal/weather_model.ckpt"
+    def make_prediction(self, batch_data, rec_type):
+        model = self.models[rec_type]
+        predictions = model['model'].run([model['prediction']],
+                                         feed_dict={model['node']: batch_data})[0]
+        predictions = np.argmax(predictions, 1)
+        print rec_type + ": ", predictions
+        maj = MH.find_maj(predictions)
+        if maj:
+            self.agent_host.sendCommand(
+                "chat {rtype}. this is: {label}".format(rtype=rec_type,
+                                                        label=model['labels'][maj]))
+        return maj
 
-sess = None
+    def single_run(self, world_state):
+        """
+        handle the situation when we get a new world_state
+        :param world_state: current world_state
+        """
 
-[model_biome, model_pig, model_weather], \
-[test_data_node, pig_test_data_node, weather_test_data_node], \
-[test_prediction, pig_test_prediction, weather_test_prediction] = init_tf_model(
-	[biome_checkpoint_file, pig_checkpoint_file, weather_checkpoint_file])
+        if world_state.number_of_video_frames_since_last_state > 0:
+            pixels = world_state.video_frames[-1].pixels
+            self.batch_data.append(scaleImg(pixels, self.IMAGE_HEIGHT, self.IMAGE_WIDTH,
+                                       self.RECORD_HEIGHT, self.RECORD_WIDTH))
 
-my_mission, my_mission_record = init_mission(target_biome_label, target_weather_label, '6000', 'pig')
-agent_host = init_agent()
-start_mission(agent_host,my_mission, my_mission_record)
-wait_till_start(agent_host)
+        for rec_type, model in self.models.items():
+            if len(self.batch_data) == model[rec_type]['batch_size']:
+                maj = self.make_prediction(self.batch_data, rec_type)
+                if maj:
+                    model['err'].append(
+                        model['labels'][maj] != self.targets['rec_type'][rec_type][1])
+                    err = model['err']
+                    err_rate = MH.array_err_rate(err)
+                    self.agent_host.sendCommand("chat {rtype} "
+                                                "err_rate: {err_rate}".format(rtype=rec_type,err_rate=err_rate))
 
-counter = 0
-correct1 = 0
-correct2 = 0
-world_state = agent_host.getWorldState()
-batch_data = []
-while world_state.is_mission_running:
-	world_state = agent_host.getWorldState()
-	if world_state.number_of_video_frames_since_last_state > 0:
-		pixels = world_state.video_frames[-1].pixels
-		batch_data.append(scaleImg(pixels, IMAGE_HEIGHT, IMAGE_WIDTH, record_height, record_width))
-	if len(batch_data) == BATCH_SIZE:
-		img_list = np.array(batch_data)
+        if len(self.batch_data) == self.targets['max_batch_size']:
+            self.batch_data = []
 
-		###
-		# This is CNN
-		predictions = model_biome.run([test_prediction],
-		                              feed_dict={test_data_node: batch_data})[0]
-		predictions = np.argmax(predictions, 1)
-		predictions_p = model_pig.run([pig_test_prediction], feed_dict={pig_test_data_node: batch_data[:5]})[0]
-		predictions_p = np.argmax(predictions_p, 1)
-		predictions_w = model_weather.run([weather_test_prediction], feed_dict={weather_test_data_node: batch_data})[0]
-		predictions_w = np.argmax(predictions_w, 1)
-		print "tf predictions of biome: ", predictions
-		maj = np.bincount(predictions).argmax()
-		#print "maj for now:", labels[maj]
-		print "tf predictions of pig: ", predictions_p
-		print "tf prediction of weather", predictions_w
-		maj_w = np.bincount(predictions_w).argmax()
-		maj_p = np.bincount(predictions_p).argmax()
-		# agent_host.sendCommand("chat from tensorflow. this is: {}".format(labels[maj]))
-		batch_data = []
-		if (labels[maj] == labels[target_biome_label]):
-			correct1 += 1
-		if (labelw[maj_w] == labelw[target_weather_label]):
-			correct2 += 1
 
-		counter = counter + 1
-		# print correct1, counter
-		# print
+    def _close_models(self):
+        for rec_type, model in self.models.items():
+            model['model'].close()
+            print "{rtype} is closed".format(rtype=rec_type)
 
-		####
+    def main(self):
+        world_state = self.agent_host.getWorldState()
+        while world_state.is_mission_running:
+            world_state = self.agent_host.getWorldState()
+            self.single_run(world_state)
+            time.sleep(0.1)
+        print """\n
+        ----------------------------------
+        |       total error rates        |
+        ----------------------------------
+        """
+        for rec_type, model in self.models.items():
+            err =  model['err']
+            err_rate = MH.array_err_rate(err)
+            print "{rtype}: {err_rate}".format(rtype=rec_type, err_rate=err_rate)
 
-		####traditional ML:
 
-		# data = np.array([convertImage(img_dir, target_biome_label, BATCH_SIZE, COLOR) for img_dir in img_list])
-        #
-		# np.random.shuffle(data)
-		# X = data[:, :-1]
-		# Y = data[:, -1].astype(np.int64)
-		# forest = RandomForestClassifier(n_estimators=100, random_state=1)
-		# multi_target_forest = MultiOutputClassifier(forest, n_jobs=3)
-		# predictions1 = multi_target_forest.fit(X, convertLabel(Y)).predict(X)
+        self._close_models()
 
-		# predictions1 = np.argmax(predictions1, 1)
-		# print "RF predictions: ", predictions1
-		# maj1 = np.bincount(predictions1).argmax()
-		# print "maj for now:", labels[maj1]
 
-		agent_host.sendCommand("chat from CNN Biome prediction this is: {}".format(labels[maj]))
-		#agent_host.sendCommand("chat from Random Forest. this is: {}".format(labels[maj1]))
-		agent_host.sendCommand("chat from CNN weather prediction. this is: {}".format(labelw[maj_w]))
-		agent_host.sendCommand("chat from CNN animal prediction. this is: {}".format(labelp[maj_p]))
+if __name__ == '__main__':
+    proj_path = '~/Dropbox/cs/CS175/groupProject'
 
-		###error rate
-		# if (labels[maj1] == labels[target_biome_label]):
-		# 	correct2 = correct2 + 1
+    rec_config = {"biome": {"ckpt": proj_path + "/model/biome_model/model.ckpt",
+                            "labels": ["mesa", "forest", "desert", "jungle", "eh"],
+                            "batch_size": 10},
+                  "animal": {"ckpt":proj_path + "/model/pig_model/pig_model.ckpt",
+                             "labels": ["None", "Pig", "Chicken", "Cow"],
+                             "batch_size": 5},
+                  "weather": {'ckpt':proj_path+ "/model/weather_model2_no_normal/weather_model.ckpt",
+                              "labels": ['normal', "rain", "thunder"],
+                              "batch_size": 10}}
+    targets = { "rec_type":{
+                    "biome": ("forest", 4),
+                    "weather": ("clear", 0),
+                    "animal": ("pig", 1)},
+                "time": "6000",
+                "rec_pig": True,
+                'max_batch_size': 10
+                }
 
-		err1 = float(counter - correct1) / float(counter)
-		err2 = float(counter - correct2) / float(counter)
-		agent_host.sendCommand("chat Current error rate for CNN biome: {}% ".format(err1))
-		agent_host.sendCommand("chat Current error rate for CNN weather: {}% ".format(err2))
-		###
-
-	time.sleep(0.1)
-
-###error rate
-
-err3 = (counter - correct1) / counter
-err4 = (counter - correct2) / counter
-print "Total error rate for CNN biome prediction: {}% ".format(err3)
-print "Total error rate for CNN weather prediction: {}% ".format(err4)
-###
-model_weather.close()
-model_pig.close()
-model_biome.close()
+    tintin = Tintin(rec_config,targets)
