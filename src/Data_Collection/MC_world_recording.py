@@ -5,7 +5,7 @@ import time
 import MalmoPython
 
 from src.Assets.generateWorldXML import generateXMLbySeed
-from src.Img_Preprocess.MC_Img_Preprocess import saveArrayAsImg
+from src.Img_Preprocess.ImgPreprocess import saveArrayAsImg
 
 # -- set up the mission -- #
 # mission_file = './world.xml'

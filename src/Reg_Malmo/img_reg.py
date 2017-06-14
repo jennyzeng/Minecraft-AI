@@ -1,6 +1,6 @@
 from src.Reg_Malmo.helper import Init_Helper as IH
 from src.Reg_Malmo.helper import ML_Helper as MH
-from src.Img_Preprocess.MC_Img_Preprocess import resizeImg, rescaleImg, imgHistograms
+from src.Img_Preprocess.ImgPreprocess import resizeImg, rescaleImg, imgHistograms
 import numpy as np
 import time
 from collections import OrderedDict
@@ -16,7 +16,7 @@ class Tintin:
     IMAGE_WIDTH = 320
     NUM_CHANNELS = 3
 
-    def __init__(self, summary, rec_config, targets):
+    def __init__(self, summary, rec_config, targets, data_scalar=None):
         '''
         :param rec_config: recognition type configurations
         :param targets: target configuration
@@ -35,6 +35,7 @@ class Tintin:
                     err
 
         '''
+        self.data_scalar = data_scalar
         # init CNN models
         self.models = OrderedDict()
         for k, v in rec_config.items():
@@ -71,18 +72,20 @@ class Tintin:
 
     def SK_prediction(self, sk_batch_data, rec_type):
         model = self.models[rec_type]['sk']
-        predictions = model['model'].predict(sk_batch_data)
+        predictions = model['model'].predict(self.data_scalar.transform(sk_batch_data))
+        # print "predictions: ", predictions
         predictions = np.argmax(predictions, 1)
         print 'sk ' + rec_type + ': ', predictions
-        return self.get_maj(rec_type, predictions, 'SK')
+        return self.get_maj(rec_type, predictions, 'sk')
 
     def CNN_prediction(self, cnn_batch_data, rec_type):
         model = self.models[rec_type]['cnn']
         predictions = model['model'].run([model['prediction']],
                                          feed_dict={model['node']: cnn_batch_data})[0]
+
         predictions = np.argmax(predictions, 1)
         print "cnn " + rec_type + ': ', predictions
-        return self.get_maj(rec_type, predictions, 'CNN')
+        return self.get_maj(rec_type, predictions, 'cnn')
 
     def model_err_handler(self, model_name, maj, rec_type):
         if maj == None:
@@ -141,7 +144,7 @@ class Tintin:
 
     def main(self):
         world_state = self.agent_host.getWorldState()
-        cnn_batch_data = []
+        cnn_batch_data = None
         sk_batch_data = []
         while world_state.is_mission_running:
             world_state = self.agent_host.getWorldState()
@@ -166,7 +169,8 @@ class Tintin:
 if __name__ == '__main__':
     proj_path = '/Users/jennyzeng/Dropbox/cs/CS175/groupProject'
 
-    rec_config = {'biome': {'ckpt': proj_path + '/model/biome_model/model.ckpt',
+    rec_config = {'biome': {
+                            # 'ckpt': proj_path + '/model/biome_model/model.ckpt',
                             'pkl': proj_path + '/sk_model/biome.pkl',
                             'labels': ['mesa', 'forest', 'desert', 'jungle', 'eh'],
                             'batch_size': 10},
@@ -174,17 +178,19 @@ if __name__ == '__main__':
                   #             'pkl': proj_path + '/sk_model/animal.pkl',
                   #            'labels': ['None', 'Pig', 'Chicken', 'Cow'],
                   #            'batch_size': 5},
-                  'weather': {'ckpt': proj_path + '/model/weather_model/weather_model.ckpt',
+                  'weather': {
+                      # 'ckpt': proj_path + '/model/weather_model/weather_model.ckpt',
                               'pkl': proj_path + '/sk_model/weather.pkl',
                               'labels': ['normal', 'rain', 'thunder'],
                               'batch_size': 10}}
     targets = {'rec_type': {
-        'biome': ('forest', 1),
-        'weather': ('normal', 0),
+        'biome': ('desert', 2),
+        'weather': ('rain', 1),
         'animal': ('pig', 1)},
         'time': '6000',
         'max_batch_size': 10
     }
+    data_scalar = IH.init_sk_model(proj_path + '/sk_model/data_scalar.pkl')
 
-    tintin = Tintin('image recognition session', rec_config, targets)
+    tintin = Tintin('image recognition session', rec_config, targets, data_scalar)
     tintin.main()

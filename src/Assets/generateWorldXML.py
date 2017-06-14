@@ -71,7 +71,7 @@ class XML_Generator:
 				<DrawEntity x="7585.95" y="88.2493" z="9366.49" type="Sheep"/>
 				<DrawEntity x="7585.95" y="88.2493" z="9356.49" type="Sheep"/>
 				</DrawingDecorator>
-				<ServerQuitFromTimeUp timeLimitMs="8000"/>
+				<ServerQuitFromTimeUp timeLimitMs="80000"/>
 				<ServerQuitWhenAnyAgentFinishes/>
 			</ServerHandlers>
 		  </ServerSection>

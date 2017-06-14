@@ -2,23 +2,6 @@ import numpy as np
 import cv2
 
 class ML_Helper:
-    @staticmethod
-    def convertImage(img,label,NUM_BINS):
-        """
-        :param img: a 3 channel image
-        :param label: label of this image
-        :param NUM_BINS: how many bins we have for each channel in histogram
-        :return: 3 channels histogram. a 1-d array with length 3*NUM_BINS+1. the last col
-                is the label.
-        """
-        COLOR = ('b', 'g', 'r')  # channel order in array
-        hist = np.zeros((NUM_BINS,3))
-        for i,col in enumerate(COLOR):
-            histr = cv2.calcHist([img],[i],None,[NUM_BINS],[0,256])
-            hist[:,i] = histr[:,0]
-        hist = hist.flatten()
-        hist = np.append(hist, label)
-        return hist
 
     @staticmethod
     def convertLabel(lab, NUM_LABELS):

@@ -1,8 +1,7 @@
 from PIL import Image
 import numpy as np
 import cv2
-import tensorflow as tf
-
+from sklearn import preprocessing
 
 def imageResize(infile, outfile, size):
     """
@@ -33,16 +32,6 @@ def convertToArray(infile):
 
 def saveArrayAsImg(array, width, height, outfile, wantDepth=False, outfile_d=None):
     array = np.array(array)
-    # if wantDepth:
-    #     array = array.reshape(height,width,4)
-    #     im = Image.fromarray(array[:,:,:3], mode='RGB')
-    #     im.save(outfile)
-    #     d_array = array[:,:,3:]
-    #     d_array = d_array.reshape(height,width)
-    #     im_depth = Image.fromarray(d_array, mode='L')
-    #     #im_depth.save(outfile_d)
-    # else:
-
     array = array.reshape(height, width, 3)
     im = Image.fromarray(array, mode='RGB')
     im.save(outfile)
@@ -74,10 +63,6 @@ def imgHistograms(img, NUM_BINS=8, COLOR=('b', 'g', 'r')):
     :param resized_img:
     :return: histograms for resized img, no label
     """
-    img = Image.fromarray(img, mode='RGB')
-    img.save('temp.jpg')
-    img = cv2.imread('temp.jpg')
-    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     hist = np.zeros((NUM_BINS, 3))
     for i, col in enumerate(COLOR):
         histr = cv2.calcHist([img], [i], None, [NUM_BINS], [0, 256])
