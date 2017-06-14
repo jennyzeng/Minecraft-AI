@@ -4,19 +4,19 @@ import MalmoPython
 import sys
 import time
 
-
 class Init_Helper:
 
-    proj_path = '/Users/jennyzeng/Dropbox/cs/CS175/groupProject'
-    biomes = {"desert": str(proj_path) + "/src/Assets/seeds/desert",
-              "forest": str(proj_path) + "/src/Assets/seeds/forest",
-              "mesa": str(proj_path) + "/src/Assets/seeds/mesa",
-              "eh": str(proj_path) + "/src/Assets/seeds/eh",
-              "jungle": str(proj_path) + "/src/Assets/seeds/jungle"}
-    biomes_for_pig_rec = {"forest", "eh"}
+    def __init__(self, proj_path):
+        self.proj_path = proj_path
+        self.biomes = {"desert": str(proj_path) + "/src/Assets/seeds/desert",
+                  "forest": str(proj_path) + "/src/Assets/seeds/forest",
+                  "mesa": str(proj_path) + "/src/Assets/seeds/mesa",
+                  "eh": str(proj_path) + "/src/Assets/seeds/eh",
+                  "jungle": str(proj_path) + "/src/Assets/seeds/jungle"}
+        self.biomes_for_pig_rec = {"forest", "eh"}
 
-    @staticmethod
-    def init_tf_model(checkpoint_file):
+
+    def init_tf_model(self, checkpoint_file):
         print "init tf models....",checkpoint_file
         model = None
         try:
@@ -31,8 +31,7 @@ class Init_Helper:
                 model.close()
             exit(0)
 
-    @staticmethod
-    def init_sk_model(pkl_file):
+    def init_sk_model(self, pkl_file):
         from sklearn.externals import joblib
         print "init sk learn models", pkl_file
         try:
@@ -44,11 +43,10 @@ class Init_Helper:
 
 
 
-    @staticmethod
-    def init_mission(summary, record_width, record_height, target_biome, weather, time, entity):
+    def init_mission(self, summary, record_width, record_height, target_biome, weather, time, entity):
         try:
             print "init mission..."
-            missionXML = XML_Generator.generateXMLbySeed(summary, Init_Helper.biomes[target_biome],
+            missionXML = XML_Generator.generateXMLbySeed(summary, self.biomes[target_biome],
                                            record_width, record_height, weather, time, entity)
             my_mission = MalmoPython.MissionSpec(missionXML, True)
             my_mission_record = MalmoPython.MissionRecordSpec('./data.tgz')
@@ -58,8 +56,7 @@ class Init_Helper:
         except Exception as e:
             print "open mission ERROR: ", e
 
-    @staticmethod
-    def init_agent():
+    def init_agent(self):
         print "init agent host..."
         try:
             agent_host = MalmoPython.AgentHost()
@@ -74,8 +71,7 @@ class Init_Helper:
             print agent_host.getUsage()
             exit(0)
 
-    @staticmethod
-    def start_mission(agent_host, my_mission, my_mission_record):
+    def start_mission(self, agent_host, my_mission, my_mission_record):
         # Attempt to start a mission:
         print "start mission..."
         max_retries = 3
@@ -90,8 +86,7 @@ class Init_Helper:
                 else:
                     time.sleep(2)
 
-    @staticmethod
-    def wait_till_start(agent_host):
+    def wait_till_start(self, agent_host):
         # Loop until mission starts:
         print "Waiting for the mission to start ",
         world_state = agent_host.getWorldState()

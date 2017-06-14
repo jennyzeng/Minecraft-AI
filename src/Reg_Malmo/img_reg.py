@@ -1,10 +1,14 @@
-from src.Reg_Malmo.helper import Init_Helper as IH
+from src.Reg_Malmo.helper import Init_Helper
 from src.Reg_Malmo.helper import ML_Helper as MH
 from src.Img_Preprocess.ImgPreprocess import resizeImg, rescaleImg, imgHistograms
 import numpy as np
 import time
 from collections import OrderedDict
+import os
+from src.Reg_Malmo.helper import MissionHelper
 
+proj_path = MissionHelper.get_grand_parent_path(os.getcwd())
+IH = Init_Helper(proj_path)
 
 class Tintin:
     # Malmo Config
@@ -170,7 +174,7 @@ class Tintin:
 
 
 if __name__ == '__main__':
-    proj_path = '/Users/jennyzeng/Dropbox/cs/CS175/groupProject'
+
 
     rec_config = {'biome': {
         # 'ckpt': proj_path + '/mo del/biome_model/model.ckpt',
