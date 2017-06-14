@@ -16,7 +16,7 @@ class Tintin:
     IMAGE_WIDTH = 320
     NUM_CHANNELS = 3
 
-    def __init__(self, summary, rec_config, targets, data_scalar=None):
+    def __init__(self, summary, rec_config, targets, has_cnn, has_sk ):
         '''
         :param rec_config: recognition type configurations
         :param targets: target configuration
@@ -35,7 +35,8 @@ class Tintin:
                     err
 
         '''
-        self.data_scalar = data_scalar
+        self.has_cnn = has_cnn
+        self.has_sk = has_sk
         # init CNN models
         self.models = OrderedDict()
         for k, v in rec_config.items():
@@ -144,8 +145,8 @@ class Tintin:
 
     def main(self):
         world_state = self.agent_host.getWorldState()
-        cnn_batch_data = None
-        sk_batch_data = []
+        cnn_batch_data = [] if self.has_cnn else None
+        sk_batch_data = [] if self.has_sk else None
         while world_state.is_mission_running:
             world_state = self.agent_host.getWorldState()
             cnn_batch_data, sk_batch_data = self.single_run(world_state, cnn_batch_data, sk_batch_data)
@@ -170,8 +171,8 @@ if __name__ == '__main__':
     proj_path = '/Users/jennyzeng/Dropbox/cs/CS175/groupProject'
 
     rec_config = {'biome': {
-                            # 'ckpt': proj_path + '/model/biome_model/model.ckpt',
-                            'pkl': proj_path + '/sk_model/biome.pkl',
+                            'ckpt': proj_path + '/model/biome_model/model.ckpt',
+                            # 'pkl': proj_path + '/sk_model/biome.pkl',
                             'labels': ['mesa', 'forest', 'desert', 'jungle', 'eh'],
                             'batch_size': 10},
                   # 'animal': {'ckpt':proj_path + '/model/pig_model/pig_model.ckpt',
@@ -179,8 +180,8 @@ if __name__ == '__main__':
                   #            'labels': ['None', 'Pig', 'Chicken', 'Cow'],
                   #            'batch_size': 5},
                   'weather': {
-                      # 'ckpt': proj_path + '/model/weather_model/weather_model.ckpt',
-                              'pkl': proj_path + '/sk_model/weather.pkl',
+                      'ckpt': proj_path + '/model/weather_model/weather_model.ckpt',
+                              # 'pkl': proj_path + '/sk_model/weather.pkl',
                               'labels': ['normal', 'rain', 'thunder'],
                               'batch_size': 10}}
     targets = {'rec_type': {
@@ -190,7 +191,7 @@ if __name__ == '__main__':
         'time': '6000',
         'max_batch_size': 10
     }
-    data_scalar = IH.init_sk_model(proj_path + '/sk_model/data_scalar.pkl')
 
-    tintin = Tintin('image recognition session', rec_config, targets, data_scalar)
+    tintin = Tintin('image recognition session',
+                    rec_config, targets, has_cnn=True,has_sk= False)
     tintin.main()
