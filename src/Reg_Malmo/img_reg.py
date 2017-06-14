@@ -16,7 +16,7 @@ class Tintin:
     IMAGE_WIDTH = 320
     NUM_CHANNELS = 3
 
-    def __init__(self, summary, rec_config, targets, has_cnn, has_sk ):
+    def __init__(self, summary, rec_config, targets ):
         '''
         :param rec_config: recognition type configurations
         :param targets: target configuration
@@ -35,8 +35,7 @@ class Tintin:
                     err
 
         '''
-        self.has_cnn = has_cnn
-        self.has_sk = has_sk
+
         # init CNN models
         self.models = OrderedDict()
         for k, v in rec_config.items():
@@ -73,7 +72,7 @@ class Tintin:
 
     def SK_prediction(self, sk_batch_data, rec_type):
         model = self.models[rec_type]['sk']
-        predictions = model['model'].predict(self.data_scalar.transform(sk_batch_data))
+        predictions = model['model'].predict(sk_batch_data)
         # print "predictions: ", predictions
         predictions = np.argmax(predictions, 1)
         print 'sk ' + rec_type + ': ', predictions
@@ -145,8 +144,8 @@ class Tintin:
 
     def main(self):
         world_state = self.agent_host.getWorldState()
-        cnn_batch_data = [] if self.has_cnn else None
-        sk_batch_data = [] if self.has_sk else None
+        cnn_batch_data = [] if self.targets['has_cnn'] else None
+        sk_batch_data = [] if self.targets['has_sk'] else None
         while world_state.is_mission_running:
             world_state = self.agent_host.getWorldState()
             cnn_batch_data, sk_batch_data = self.single_run(world_state, cnn_batch_data, sk_batch_data)
@@ -171,8 +170,8 @@ if __name__ == '__main__':
     proj_path = '/Users/jennyzeng/Dropbox/cs/CS175/groupProject'
 
     rec_config = {'biome': {
-                            'ckpt': proj_path + '/model/biome_model/model.ckpt',
-                            # 'pkl': proj_path + '/sk_model/biome.pkl',
+                            # 'ckpt': proj_path + '/mo del/biome_model/model.ckpt',
+                            'pkl': proj_path + '/sk_model/biome.pkl',
                             'labels': ['mesa', 'forest', 'desert', 'jungle', 'eh'],
                             'batch_size': 10},
                   # 'animal': {'ckpt':proj_path + '/model/pig_model/pig_model.ckpt',
@@ -180,8 +179,8 @@ if __name__ == '__main__':
                   #            'labels': ['None', 'Pig', 'Chicken', 'Cow'],
                   #            'batch_size': 5},
                   'weather': {
-                      'ckpt': proj_path + '/model/weather_model/weather_model.ckpt',
-                              # 'pkl': proj_path + '/sk_model/weather.pkl',
+                      # 'ckpt': proj_path + '/model/weather_model/weather_model.ckpt',
+                              'pkl': proj_path + '/sk_model/weather.pkl',
                               'labels': ['normal', 'rain', 'thunder'],
                               'batch_size': 10}}
     targets = {'rec_type': {
@@ -189,9 +188,11 @@ if __name__ == '__main__':
         'weather': ('rain', 1),
         'animal': ('pig', 1)},
         'time': '6000',
-        'max_batch_size': 10
+        'max_batch_size': 10,
+        'has_cnn' : False,
+        'has_sk' :True
     }
 
     tintin = Tintin('image recognition session',
-                    rec_config, targets, has_cnn=True,has_sk= False)
+                    rec_config, targets)
     tintin.main()
