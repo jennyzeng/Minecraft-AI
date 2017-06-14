@@ -16,7 +16,7 @@ class Tintin:
     IMAGE_WIDTH = 320
     NUM_CHANNELS = 3
 
-    def __init__(self, summary, rec_config, targets ):
+    def __init__(self, summary, rec_config, targets):
         '''
         :param rec_config: recognition type configurations
         :param targets: target configuration
@@ -36,7 +36,9 @@ class Tintin:
 
         '''
 
-        # init CNN models
+        # init models
+        self.has_cnn = False
+        self.has_sk = False
         self.models = OrderedDict()
         for k, v in rec_config.items():
             self.models[k] = {'batch_size': v['batch_size'], 'labels': v['labels']}
@@ -44,9 +46,11 @@ class Tintin:
                 model, node, pre = IH.init_tf_model(v['ckpt'])  # CNN
                 self.models[k].update({'cnn': {'model': model, 'node': node, 'prediction': pre,
                                                'err': []}})
+                self.has_cnn = True
             if 'pkl' in v:
                 sk_model = IH.init_sk_model(v['pkl'])  # SK
                 self.models[k].update({'sk': {'model': sk_model, 'err': []}})
+                self.has_sk = True
 
         self.targets = targets
         # init Malmo mission
@@ -58,7 +62,6 @@ class Tintin:
         self.agent_host = IH.init_agent()
         IH.start_mission(self.agent_host, self.my_mission, self.my_mission_record)
         IH.wait_till_start(self.agent_host)
-        self.cnn_batch_data = []
 
     def get_maj(self, rec_type, predictions, model_type):
         maj = MH.find_maj(predictions)
@@ -129,7 +132,6 @@ class Tintin:
             if sk_batch_data and len(sk_batch_data) == values['batch_size']:
                 self.SK_single_run(sk_batch_data, rec_type)
 
-
         if cnn_batch_data and len(cnn_batch_data) == self.targets['max_batch_size']:
             cnn_batch_data = []
 
@@ -144,8 +146,8 @@ class Tintin:
 
     def main(self):
         world_state = self.agent_host.getWorldState()
-        cnn_batch_data = [] if self.targets['has_cnn'] else None
-        sk_batch_data = [] if self.targets['has_sk'] else None
+        cnn_batch_data = [] if self.has_cnn else None
+        sk_batch_data = [] if self.has_sk else None
         while world_state.is_mission_running:
             world_state = self.agent_host.getWorldState()
             cnn_batch_data, sk_batch_data = self.single_run(world_state, cnn_batch_data, sk_batch_data)
@@ -166,31 +168,30 @@ class Tintin:
             if 'sk' in values:
                 print '        | ' + self.err_beauty_print(rec_type, 'sk', values['sk']['err'])
 
+
 if __name__ == '__main__':
     proj_path = '/Users/jennyzeng/Dropbox/cs/CS175/groupProject'
 
     rec_config = {'biome': {
-                            # 'ckpt': proj_path + '/mo del/biome_model/model.ckpt',
-                            'pkl': proj_path + '/sk_model/biome.pkl',
-                            'labels': ['mesa', 'forest', 'desert', 'jungle', 'eh'],
-                            'batch_size': 10},
-                  # 'animal': {'ckpt':proj_path + '/model/pig_model/pig_model.ckpt',
-                  #             'pkl': proj_path + '/sk_model/animal.pkl',
-                  #            'labels': ['None', 'Pig', 'Chicken', 'Cow'],
-                  #            'batch_size': 5},
-                  'weather': {
-                      # 'ckpt': proj_path + '/model/weather_model/weather_model.ckpt',
-                              'pkl': proj_path + '/sk_model/weather.pkl',
-                              'labels': ['normal', 'rain', 'thunder'],
-                              'batch_size': 10}}
+        # 'ckpt': proj_path + '/mo del/biome_model/model.ckpt',
+        'pkl': proj_path + '/sk_model/biome.pkl',
+        'labels': ['mesa', 'forest', 'desert', 'jungle', 'eh'],
+        'batch_size': 10},
+        # 'animal': {'ckpt':proj_path + '/model/pig_model/pig_model.ckpt',
+        #             'pkl': proj_path + '/sk_model/animal.pkl',
+        #            'labels': ['None', 'Pig', 'Chicken', 'Cow'],
+        #            'batch_size': 5},
+        'weather': {
+            # 'ckpt': proj_path + '/model/weather_model/weather_model.ckpt',
+            'pkl': proj_path + '/sk_model/weather.pkl',
+            'labels': ['normal', 'rain', 'thunder'],
+            'batch_size': 10}}
     targets = {'rec_type': {
         'biome': ('desert', 2),
         'weather': ('rain', 1),
         'animal': ('pig', 1)},
         'time': '6000',
-        'max_batch_size': 10,
-        'has_cnn' : False,
-        'has_sk' :True
+        'max_batch_size': 10
     }
 
     tintin = Tintin('image recognition session',
