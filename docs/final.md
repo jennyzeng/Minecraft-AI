@@ -105,3 +105,22 @@ For the biome recognition, we calculate the error rate every time after "Tintin"
 In this figure, you can see the prediction of CNN and Random Forest at this moment is both forest and the current accumulated error is 0% for both.
 
 <img src="imgs/final/quan_1.png" width="70%">
+
+In this figure, you can see the prediction of Random Forest(sk) at this moment is both mesa and weather is raining, current accumulated error is 0% for both classifications.
+
+<img src="imgs/final/mesa_rain.png" width="70%">
+
+In this figure, you can see the prediction of CNN at this moment is both eh and the weather is thunder, current accumulated error is 33.3% for weather classification and 6.7% for biome classification. 
+
+<img src="imgs/final/eh_thunder.png" width="70%">
+
+### Reference
+http://cs231n.github.io/convolutional-networks/#conv
+https://www.tensorflow.org/get_started/mnist/mechanics
+https://www.tensorflow.org/get_started/mnist/beginners
+https://github.com/scikit-learn/scikit-learn
+http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html
+http://scikit-learn.org/stable/modules/multiclass.html
+http://scikit-learn.org/stable/modules/svm.html
+ 
+
