@@ -16,12 +16,13 @@ Welcome to our CS175 Project in AI repository. Our Minecraft Malmo agent "Tintin
 
 Isn't that cool to have a tour guide to walk you through Minecraft?
 
-
 Here's a screenshot, but you would explore more magic by playing with the project!
 
-<img src="imgs/demo.png" width="50%">
 
-<img src="imgs/demo2.png" width="50%">
+
+<img src="imgs/final/mesa_rain.png" width="50%">
+
+<img src="imgs/final/eh_thunder.png" width="50%">
 
 
 
