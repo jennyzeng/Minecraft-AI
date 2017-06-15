@@ -100,7 +100,7 @@ For the animal recognition, it seems like the Random Forest even has a better pe
 
 ### Qualitative Result
 
-To evaluate the quality of our project, we combine our two models: CNN and Random Forest with malmo.  Our player controls agent "TinTin" to walk in the Minecraft world and "Tintin" can give a prediction of the biome continuously. We can see whether Tintin is making the correct prediciton during the mission. Besides, we also calculate the cumulative error rate as the mission goes on to get a better judgement on the quality of our models. 
+To evaluate the quality of our project, we combine our two models: CNN and Random Forest with malmo.  Our player controls agent "TinTin" to walk in the Minecraft world and "Tintin" can give a prediction of the biome, weather, and animal continuously. We can see whether Tintin is making the correct prediciton during the mission. Besides, we also calculate the cumulative error rate as the mission goes on to get a better judgement on the quality of our models. 
 
 In the figure below you can see the prediction of CNN and Random Forest at this moment in a world with only dessert biome.  The current accumulated error is 0% for both. 
 
