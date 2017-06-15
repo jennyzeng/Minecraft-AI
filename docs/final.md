@@ -118,6 +118,10 @@ In this figure, you can see the prediction of CNN at this moment is both eh and 
 
 <img src="imgs/final/eh_thunder.png" width="70%">
 
+In this figure, you can see the prediction of CNN at this moment is the weather is normal with the animal pig, current accumulated error is 0% for weather classification and 16.7% for animal classification. 
+
+<img src="imgs/final/PIG.png" width="70%">
+
 ### Reference
 - [Stanford CS 231n](http://cs231n.github.io/convolutional-networks/#conv)
 - [https://www.tensorflow.org/get_started/mnist/mechanics](https://www.tensorflow.org/get_started/mnist/mechanics)
