@@ -116,11 +116,17 @@ In this figure, you can see the prediction of CNN at this moment is both eh and 
 
 ### Reference
 http://cs231n.github.io/convolutional-networks/#conv
+
 https://www.tensorflow.org/get_started/mnist/mechanics
+
 https://www.tensorflow.org/get_started/mnist/beginners
+
 https://github.com/scikit-learn/scikit-learn
+
 http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html
+
 http://scikit-learn.org/stable/modules/multiclass.html
+
 http://scikit-learn.org/stable/modules/svm.html
  
 
